@@ -154,6 +154,59 @@
         .active-fist .dot { background: var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold); }
 
         #input-video { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; z-index: -100; }
+        /* PRIVACY TOOLTIP STYLE */
+.privacy-tooltip {
+    position: absolute;
+    bottom: 100%; /* ממקם את זה מעל הכפתור */
+    left: 0;
+    margin-bottom: 15px; /* רווח מהכפתור */
+    width: 240px;
+    background: rgba(5, 7, 10, 0.95); /* רקע כהה כמעט אטום */
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-blue); /* פס כחול בצד לעיצוב */
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #aaa;
+    
+    /* הסתרה כברירת מחדל */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    pointer-events: none; /* כדי שלא יפריע להקליק */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+/* חץ קטן למטה */
+.privacy-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 20px;
+    width: 10px;
+    height: 10px;
+    background: rgba(5, 7, 10, 0.95);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transform: rotate(45deg);
+}
+
+/* הצגה בעת ריחוף (Hover) */
+.cam-container:hover .privacy-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* הסתרת הרמז הקופץ כשהטולטיפ נפתח כדי למנוע בלאגן */
+.cam-container:hover #cam-hint {
+    opacity: 0;
+}
     </style>
 </head>
 <body>
@@ -165,12 +218,22 @@
     </nav>
 
     <div class="cam-container">
-        <div id="cam-hint">Try the Magic 👇</div>
-        <button id="cam-toggle" class="interactive">
-            <span class="btn-text">START CAMERA</span>
-            <div class="spinner" id="loading-spinner"></div>
-        </button>
+    
+    <div class="privacy-tooltip">
+        <div style="margin-bottom:5px; color:white; font-weight:bold;">🔒 Privacy First</div>
+        Video is processed locally in your browser. No data is saved or sent to any server.
+        <div style="margin-top:5px; color:var(--accent-gold); font-weight:bold;">
+            Gestures: Open Hand vs Fist
+        </div>
     </div>
+
+    <div id="cam-hint">Try the Magic 👇</div>
+    
+    <button id="cam-toggle" class="interactive">
+        <span class="btn-text">START CAMERA</span>
+        <div class="spinner" id="loading-spinner"></div>
+    </button>
+</div>
 
     <section id="home">
         <h1 style="font-size: 2rem; margin-bottom: 0; opacity: 0.6; font-weight: 400;">GAD RAPAPORT</h1>
@@ -494,5 +557,6 @@
     </script>
 </body>
 </html>
+
 
 
