@@ -15,8 +15,8 @@
 
     <style>
         :root {
-            --bg-deep: #05070a;
-            /* New Brand Colors based on Logo */
+            /* Adjusted for new background compatibility */
+            --bg-deep: #020617; 
             --accent-blue: #00C2FF; /* Electric Blue */
             --accent-red: #D90429;  /* Powerful Red */
             --glass: rgba(255, 255, 255, 0.05);
@@ -27,7 +27,8 @@
         html { scroll-behavior: smooth; }
 
         body { 
-            background: radial-gradient(circle at center, #1a0b0e 0%, #000000 100%); /* Subtle red tint in background */
+            /* NEW BACKGROUND: Deep Slate to Midnight Blue */
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
             color: white; font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
@@ -42,7 +43,7 @@
             z-index: 100; display: flex; align-items: center; gap: 20px;
         }
         .nav-logo-img {
-            height: 30px; /* Adjust size */
+            height: 30px; 
             width: auto;
         }
         .nav-item {
@@ -311,7 +312,8 @@
         
         // --- 2. THREE.JS SETUP ---
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x05070a, 0.0008);
+        // UPDATED FOG: Matches the outer edge of the new background gradient (#020617)
+        scene.fog = new THREE.FogExp2(0x020617, 0.0008);
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 5000);
         camera.position.set(0, 0, 1500); 
@@ -521,5 +523,3 @@
     </script>
 </body>
 </html>
-
-
