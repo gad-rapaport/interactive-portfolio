@@ -18,12 +18,12 @@
         :root {
             --bg-deep: #020617; 
             --accent-blue: #00C2FF; 
+            --accent-purple: #BD00FF; /* New secondary color */
             --accent-red: #D90429;
-            --terminal-bg: rgba(10, 10, 15, 0.9);
-            --border: rgba(255, 255, 255, 0.1);
+            --terminal-bg: rgba(15, 15, 20, 0.95);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         html { scroll-behavior: smooth; }
 
         body { 
@@ -48,7 +48,7 @@
         nav {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
             padding: 10px 30px; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
-            border: 1px solid var(--border); border-radius: 100px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 100px;
             z-index: 100; display: flex; align-items: center; gap: 20px;
         }
         .nav-logo-img { height: 30px; width: auto; }
@@ -64,24 +64,35 @@
         .hero-logo-img { height: 120px; width: auto; filter: drop-shadow(0 0 20px rgba(217, 4, 41, 0.4)); }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
-        /* TERMINAL FLEX */
+        /* TERMINAL */
         .terminal-window {
-            width: 100%; max-width: 600px; background: var(--terminal-bg);
+            width: 100%; max-width: 650px; background: var(--terminal-bg);
             border: 1px solid #333; border-radius: 8px; margin-top: 30px;
             font-family: 'Fira Code', monospace; padding: 0; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; transform: translateY(20px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6); opacity: 0; transform: translateY(20px);
+            text-align: left;
         }
         .terminal-header {
             background: #1a1b26; padding: 8px 15px; display: flex; gap: 6px;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #333; align-items: center;
         }
         .term-dot { width: 10px; height: 10px; border-radius: 50%; }
         .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
-        .terminal-body { padding: 15px; color: #a9b1d6; font-size: 0.85rem; height: 150px; overflow-y: auto; }
-        .cmd-line { margin-bottom: 5px; display: block; }
-        .success { color: #9ece6a; } .warn { color: #e0af68; } .info { color: #7aa2f7; }
+        .terminal-body { 
+            padding: 15px; color: #a9b1d6; font-size: 0.9rem; height: 250px; overflow-y: auto; 
+            cursor: text;
+        }
+        .cmd-line { margin-bottom: 8px; display: block; line-height: 1.5; white-space: pre-wrap; }
+        .success { color: #9ece6a; } .warn { color: #e0af68; } .info { color: #7aa2f7; } .error { color: #f7768e; }
+        
+        .input-line { display: flex; align-items: center; }
+        .prompt { color: #7aa2f7; margin-right: 8px; font-weight: bold; }
+        #cmd-input {
+            background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace;
+            font-size: 0.9rem; flex: 1; outline: none; cursor: none;
+        }
 
-        /* UI ELEMENTS */
+        /* CAM UI */
         .cam-container {
             position: fixed; bottom: 30px; left: 30px; z-index: 101;
             display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
@@ -117,7 +128,7 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             pointer-events: none;
         }
-        .interactive { pointer-events: auto; cursor: none; } /* Cursor handled by JS */
+        .interactive { pointer-events: auto; cursor: none; }
 
         h1 {
             font-family: 'Cinzel', serif; font-size: 4rem; font-weight: 700;
@@ -127,7 +138,7 @@
         p.subtitle {
             font-size: 1.1rem; letter-spacing: 2px; color: rgba(255,255,255,0.8);
             text-transform: uppercase; margin-bottom: 30px; font-weight: 300; text-align: center;
-            min-height: 1.5em; /* Prevent jump */
+            min-height: 1.5em;
         }
         .cursor-blink { animation: blink 1s step-end infinite; border-right: 2px solid var(--accent-blue); }
         @keyframes blink { 50% { border-color: transparent; } }
@@ -135,11 +146,10 @@
         /* CARDS */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; width: 100%; max-width: 1100px; }
         .card {
-            background: rgba(10, 15, 25, 0.7); border: 1px solid var(--border);
+            background: rgba(10, 15, 25, 0.7); border: 1px solid rgba(255,255,255,0.1);
             padding: 35px; border-radius: 16px; text-align: left;
             transition: 0.4s ease; transform: translateY(30px); opacity: 0;
-            position: relative; overflow: hidden;
-            backdrop-filter: blur(10px);
+            position: relative; overflow: hidden; backdrop-filter: blur(10px);
         }
         .card::before {
             content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
@@ -162,7 +172,7 @@
             display: flex; align-items: center; justify-content: center; gap: 12px;
             padding: 16px; text-decoration: none; font-family: 'Montserrat'; font-weight: 600;
             border-radius: 8px; transition: 0.3s; letter-spacing: 1px; font-size: 0.9rem;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .btn-email { background: rgba(255,255,255,0.05); color: white; }
         .btn-email:hover { background: rgba(255,255,255,0.15); border-color: var(--accent-blue); transform: translateY(-2px); }
@@ -182,7 +192,7 @@
         }
         .dot { width: 6px; height: 6px; background: #333; border-radius: 50%; transition: 0.3s; }
         .active-hand .dot { background: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue); }
-        .active-fist .dot { background: var(--accent-red); box-shadow: 0 0 15px var(--accent-red); }
+        .active-fist .dot { background: var(--accent-purple); box-shadow: 0 0 15px var(--accent-purple); }
 
         #input-video { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; z-index: -100; }
         
@@ -196,7 +206,7 @@
 
         .privacy-tooltip {
             position: absolute; bottom: 110%; left: 0; width: 260px;
-            background: rgba(5, 7, 10, 0.95); border: 1px solid var(--border);
+            background: rgba(5, 7, 10, 0.95); border: 1px solid rgba(255,255,255,0.1);
             border-left: 3px solid var(--accent-blue); padding: 15px; border-radius: 8px;
             font-size: 0.8rem; line-height: 1.4; color: #ccc;
             opacity: 0; visibility: hidden; transform: translateY(10px);
@@ -224,7 +234,7 @@
         <div class="privacy-tooltip" id="privacy-tooltip">
             <div style="margin-bottom:5px; color:white; font-weight:bold;">🔒 Privacy First</div>
             Video processed locally. No data saved.
-            <div style="margin-top:5px; color:var(--accent-red); font-weight:bold;">
+            <div style="margin-top:5px; color:var(--accent-blue); font-weight:bold;">
                 Gestures: Open Hand 🖐️ vs Fist ✊
             </div>
         </div>
@@ -256,15 +266,19 @@
             <i class="fas fa-file-download"></i> DOWNLOAD CV
         </a>
 
-        <div class="terminal-window interactive">
+        <div class="terminal-window interactive" onclick="document.getElementById('cmd-input').focus()">
             <div class="terminal-header">
                 <div class="term-dot red"></div>
                 <div class="term-dot yellow"></div>
                 <div class="term-dot green"></div>
-                <span style="font-size:10px; color:#666; margin-left:10px;">gadi@server:~</span>
+                <span style="font-size:10px; color:#666; margin-left:10px;">gadi@root:~</span>
             </div>
             <div class="terminal-body" id="terminal-body">
+                <div class="input-line" id="input-line" style="display:none;">
+                    <span class="prompt">gadi@root:~$</span>
+                    <input type="text" id="cmd-input" autocomplete="off" spellcheck="false">
                 </div>
+            </div>
         </div>
     </section>
 
@@ -331,55 +345,105 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <script>
-        // --- 1. CUSTOM CURSOR LOGIC ---
+        // --- 1. CUSTOM CURSOR ---
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
-
-        // Add hover effect to interactive elements
-        document.querySelectorAll('.interactive, a, button').forEach(el => {
+        document.querySelectorAll('.interactive, a, button, input').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        // --- 2. TERMINAL LOGIC ---
+        // --- 2. TERMINAL WITH JSON FETCH ---
         const terminalBody = document.getElementById('terminal-body');
-        const commands = [
-            { text: "gadi@server:~$ initializing_devops_profile.sh", class: "cmd-line" },
-            { text: "> Loading Python skills... [OK]", class: "cmd-line success", delay: 500 },
-            { text: "> Loading Docker containers... [OK]", class: "cmd-line success", delay: 1000 },
-            { text: "> Connecting to K8s cluster... [CONNECTED]", class: "cmd-line success", delay: 1500 },
-            { text: "> System Ready. Welcome Gadi.", class: "cmd-line info", delay: 2200 },
-            { text: "gadi@server:~$ ", class: "cmd-line", delay: 2800 }
+        const inputLine = document.getElementById('input-line');
+        const cmdInput = document.getElementById('cmd-input');
+        
+        let availableCommands = {};
+
+        // Fetch commands from JSON file
+        fetch('commands.json')
+            .then(response => response.json())
+            .then(data => {
+                availableCommands = data;
+            })
+            .catch(error => {
+                console.error("Could not load commands.json", error);
+                availableCommands = { "help": { "response": "Error loading commands.", "type": "error" }};
+            });
+
+        const bootSequence = [
+            { text: "gadi@root:~$ initializing_kernel...", class: "cmd-line" },
+            { text: "> Loading configuration... [OK]", class: "cmd-line success", delay: 300 },
+            { text: "> Connecting to neural interface... [OK]", class: "cmd-line success", delay: 600 },
+            { text: "> Starting interactive shell...", class: "cmd-line info", delay: 900 },
+            { text: 'Type "help" to see available commands.', class: "cmd-line warn", delay: 1200 }
         ];
 
-        function runTerminal() {
+        function runBoot() {
             let delaySum = 0;
-            commands.forEach((cmd) => {
+            bootSequence.forEach((cmd) => {
                 setTimeout(() => {
                     const line = document.createElement('div');
                     line.className = cmd.class;
                     line.textContent = cmd.text;
-                    terminalBody.appendChild(line);
+                    terminalBody.insertBefore(line, inputLine);
                     terminalBody.scrollTop = terminalBody.scrollHeight;
                 }, delaySum + (cmd.delay || 0));
                 delaySum += (cmd.delay || 100);
             });
+            setTimeout(() => {
+                inputLine.style.display = 'flex';
+                cmdInput.focus();
+            }, delaySum + 200);
         }
-        
-        // --- 3. TYPEWRITER EFFECT ---
-        gsap.registerPlugin(TextPlugin);
-        const subText = "Don't Just Write Code. Rewrite the Laws.";
-        gsap.to("#typewriter", {
-            duration: 3,
-            text: subText,
-            ease: "none",
-            delay: 1
+
+        cmdInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = this.value.trim().toLowerCase();
+                const historyLine = document.createElement('div');
+                historyLine.className = 'cmd-line';
+                historyLine.innerHTML = `<span class="prompt">gadi@root:~$</span> ${this.value}`;
+                terminalBody.insertBefore(historyLine, inputLine);
+                
+                let responseText = '';
+                let respClass = 'info';
+
+                if (cmd === 'clear') {
+                    terminalBody.innerHTML = '';
+                    terminalBody.appendChild(inputLine);
+                    this.value = '';
+                    setTimeout(()=> this.focus(), 10); 
+                    return;
+                } 
+                
+                if (availableCommands[cmd]) {
+                    responseText = availableCommands[cmd].response;
+                    respClass = availableCommands[cmd].type || 'info';
+                } else if (cmd !== '') {
+                    responseText = `bash: ${cmd}: command not found. Try "help".`;
+                    respClass = 'error';
+                }
+
+                if (responseText) {
+                    const respDiv = document.createElement('div');
+                    respDiv.className = 'cmd-line ' + respClass;
+                    respDiv.textContent = responseText;
+                    terminalBody.insertBefore(respDiv, inputLine);
+                }
+
+                this.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
         });
 
-        // --- 4. UX LOGIC (EXISTING) ---
+        // --- 3. TYPEWRITER ---
+        gsap.registerPlugin(TextPlugin);
+        gsap.to("#typewriter", { duration: 3, text: "Don't Just Write Code. Rewrite the Laws.", ease: "none", delay: 1 });
+
+        // --- 4. THREE.JS & HAND TRACKING ---
         let isCameraRunning = false;
         let isHandDetected = false;
         let isFist = false;
@@ -392,7 +456,6 @@
         const statusInd = document.getElementById('status-indicator');
         const statusTxt = document.getElementById('status-text');
         
-        // --- 5. THREE.JS SETUP (EXISTING) ---
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x020617, 0.0008);
 
@@ -405,19 +468,22 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.body.appendChild(renderer.domElement);
 
-        // --- PARTICLES ---
-        const particleCount = 12000;
+        // PARTICLES
+        const particleCount = 14000;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const originalPos = new Float32Array(particleCount * 3);
         const randomOffsets = new Float32Array(particleCount * 3);
-        const ringAngles = new Float32Array(particleCount);
-
+        
+        // Sphere Mapping for Fist Effect
+        const sphereCoords = new Float32Array(particleCount * 3);
+        
         const spread = 2000;
         const depth = 6000;
 
         for(let i=0; i<particleCount; i++) {
             const i3 = i * 3;
+            // Galaxy Random Pos
             const r = Math.random() * spread;
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos((Math.random() * 2) - 1);
@@ -434,7 +500,15 @@
             randomOffsets[i3+1] = cloudR * Math.sin(phi) * Math.sin(theta);
             randomOffsets[i3+2] = cloudR * Math.cos(phi);
 
-            ringAngles[i] = theta; 
+            // Pre-calculate Perfect Sphere Coords (for Order Effect)
+            // Fibonacci Sphere distribution for even spread
+            const phiSphere = Math.acos(1 - 2 * (i + 0.5) / particleCount);
+            const thetaSphere = Math.PI * (1 + Math.sqrt(5)) * i;
+            const sphereR = 250; 
+            
+            sphereCoords[i3] = sphereR * Math.sin(phiSphere) * Math.cos(thetaSphere);
+            sphereCoords[i3+1] = sphereR * Math.sin(phiSphere) * Math.sin(thetaSphere);
+            sphereCoords[i3+2] = sphereR * Math.cos(phiSphere);
         }
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -458,7 +532,7 @@
         const starSystem = new THREE.Points(geometry, material);
         scene.add(starSystem);
 
-        // --- ANIMATIONS ---
+        // ANIMATIONS
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
         gsap.to(camera.position, { z: -1500, ease: "none", scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }});
         gsap.to(starSystem.rotation, { z: Math.PI / 2, ease: "none", scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 2 }});
@@ -466,8 +540,8 @@
         gsap.from("#home h1", { opacity: 0, y: 50, duration: 2, delay: 0.5, ease: "power3.out" });
         gsap.from(".hero-logo-img", { opacity: 0, scale: 0.8, duration: 1.5, delay: 0.2, ease: "back.out(1.7)" });
 
-        // Trigger Terminal Animation after Hero Loads
-        gsap.to(".terminal-window", { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: runTerminal });
+        // Trigger Terminal Animation
+        gsap.to(".terminal-window", { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: runBoot });
 
         gsap.to(".card", { scrollTrigger: { trigger: "#projects", start: "top 70%" }, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" });
         gsap.to(".contact-container", { scrollTrigger: { trigger: "#contact", start: "top 80%" }, opacity: 1, y: 0, duration: 1, ease: "back.out(1.7)" });
@@ -483,8 +557,16 @@
 
         // --- HAND TRACKING ---
         let handTarget = new THREE.Vector3(0,0,0);
+        let smoothedTarget = new THREE.Vector3(0,0,0); 
+
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-        hands.setOptions({ maxNumHands: 1, modelComplexity: 0, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+        
+        hands.setOptions({ 
+            maxNumHands: 1, 
+            modelComplexity: 1, 
+            minDetectionConfidence: 0.5, 
+            minTrackingConfidence: 0.5 
+        });
 
         hands.onResults(results => {
             if(!isCameraRunning) return;
@@ -497,6 +579,7 @@
                 isHandDetected = true;
                 const lm = results.multiHandLandmarks[0];
                 const palmCenter = lm[9];
+                
                 handTarget.x = (0.5 - palmCenter.x) * 1200;
                 handTarget.y = (0.5 - palmCenter.y) * 800;
                 handTarget.z = camera.position.z - 600; 
@@ -505,9 +588,9 @@
                 const distance = Math.sqrt(Math.pow(wrist.x - middleTip.x, 2) + Math.pow(wrist.y - middleTip.y, 2));
 
                 if (distance < 0.25) { 
-                    isFist = true; statusInd.className = 'active-fist'; statusTxt.innerText = "Power (Fist)";
+                    isFist = true; statusInd.className = 'active-fist'; statusTxt.innerText = "CYBER SPHERE ACTIVE";
                 } else {
-                    isFist = false; statusInd.className = 'active-hand'; statusTxt.innerText = "Flow (Open)";
+                    isFist = false; statusInd.className = 'active-hand'; statusTxt.innerText = "Hand Tracked";
                 }
 
             } else {
@@ -530,22 +613,20 @@
             }
         });
 
-        // --- ANIMATION LOOP ---
-        let time = 0;
+        // LOOP
         const colBase = new THREE.Color(0x00C2FF); 
-        const colRed = new THREE.Color(0xD90429); 
+        const colSphere = new THREE.Color(0xBD00FF); // Cyber Purple
 
         function animate() {
             requestAnimationFrame(animate);
-            time += 0.01;
             const pos = geometry.attributes.position.array;
 
+            smoothedTarget.lerp(handTarget, 0.1); 
+
             if(isHandDetected && isCameraRunning) {
-                material.color.lerp(isFist ? colRed : colBase, 0.1);
-                material.size = THREE.MathUtils.lerp(material.size, isFist ? 4.5 : 3.5, 0.1);
+                material.color.lerp(isFist ? colSphere : colBase, 0.1);
             } else {
                 material.color.lerp(colBase, 0.1);
-                material.size = THREE.MathUtils.lerp(material.size, 3.5, 0.1);
             }
 
             for(let i=0; i<particleCount; i++) {
@@ -555,27 +636,51 @@
                     let tx, ty, tz;
 
                     if(isFist) {
-                        const ringRadius = 150; 
-                        const angle = ringAngles[i] + time * 3; 
-                        tx = handTarget.x + Math.cos(angle) * ringRadius;
-                        ty = handTarget.y + Math.sin(angle) * ringRadius;
-                        tz = handTarget.z + (Math.random()-0.5) * 30; 
-                        pos[i3] += (tx - pos[i3]) * 0.1; pos[i3+1] += (ty - pos[i3+1]) * 0.1; pos[i3+2] += (tz - pos[i3+2]) * 0.1;
+                        // --- NEW EFFECT: CYBER SPHERE (ORDER) ---
+                        // Rotate the sphere points based on time
+                        const time = Date.now() * 0.001;
+                        const cosT = Math.cos(time);
+                        const sinT = Math.sin(time);
+                        
+                        // Get base sphere coord
+                        const sx = sphereCoords[i3];
+                        const sy = sphereCoords[i3+1];
+                        const sz = sphereCoords[i3+2];
+                        
+                        // Rotate Y axis
+                        const rx = sx * cosT - sz * sinT;
+                        const rz = sx * sinT + sz * cosT;
+                        
+                        tx = smoothedTarget.x + rx;
+                        ty = smoothedTarget.y + sy;
+                        tz = smoothedTarget.z + rz;
+
+                        // Lerp to sphere shape (Order)
+                        pos[i3] += (tx - pos[i3]) * 0.1;
+                        pos[i3+1] += (ty - pos[i3+1]) * 0.1;
+                        pos[i3+2] += (tz - pos[i3+2]) * 0.1;
 
                     } else {
-                        tx = handTarget.x + randomOffsets[i3];
-                        ty = handTarget.y + randomOffsets[i3+1];
-                        tz = handTarget.z + randomOffsets[i3+2];
-                        pos[i3] += (tx - pos[i3]) * 0.05; pos[i3+1] += (ty - pos[i3+1]) * 0.05; pos[i3+2] += (tz - pos[i3+2]) * 0.05;
+                        // --- OPEN HAND (CHAOS) ---
+                        tx = smoothedTarget.x + randomOffsets[i3];
+                        ty = smoothedTarget.y + randomOffsets[i3+1];
+                        tz = smoothedTarget.z + randomOffsets[i3+2];
+                        
+                        pos[i3] += (tx - pos[i3]) * 0.05; 
+                        pos[i3+1] += (ty - pos[i3+1]) * 0.05; 
+                        pos[i3+2] += (tz - pos[i3+2]) * 0.05;
                     }
                 } else {
+                    // IDLE
                     const ox = originalPos[i3]; const oy = originalPos[i3+1]; const oz = originalPos[i3+2];
                     pos[i3] += (ox - pos[i3]) * 0.02; pos[i3+1] += (oy - pos[i3+1]) * 0.02; pos[i3+2] += (oz - pos[i3+2]) * 0.02;
                 }
             }
 
             geometry.attributes.position.needsUpdate = true;
-            starSystem.rotation.y += 0.0003;
+            // No global rotation when fist is active (the sphere rotates itself)
+            if(!isFist) starSystem.rotation.y += 0.0003;
+            
             renderer.render(scene, camera);
         }
         animate();
@@ -588,18 +693,15 @@
 
         function toggleTooltip(event) {
             event.stopPropagation();
-            const tooltip = document.getElementById('privacy-tooltip');
-            const infoBtn = document.querySelector('.info-btn');
-            tooltip.classList.toggle('show');
-            infoBtn.classList.toggle('active');
+            document.getElementById('privacy-tooltip').classList.toggle('show');
+            document.querySelector('.info-btn').classList.toggle('active');
         }
 
         document.addEventListener('click', (e) => {
             const tooltip = document.getElementById('privacy-tooltip');
-            const infoBtn = document.querySelector('.info-btn');
             if (tooltip.classList.contains('show') && !e.target.closest('.privacy-tooltip')) {
                 tooltip.classList.remove('show');
-                infoBtn.classList.remove('active');
+                document.querySelector('.info-btn').classList.remove('active');
             }
         });
     </script>
