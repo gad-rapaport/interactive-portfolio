@@ -1,108 +1,161 @@
 {
   "help": {
-    "response": "COMMANDS AVAILABLE:\n\n[USER]     about, skills, contact, projects, cv, social\n[DEVOPS]   docker, k8s, aws, terraform, linux, git, ci/cd\n[SYSTEM]   ls, whoami, date, uptime, history, top, df, clear\n[FUN]      matrix, coffee, sudo, joke, vim, ping, echo\n\nType any command to execute.",
+    "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat, open\n[DEVOPS]      docker, k8s, aws, terraform, git, ci/cd\n[SYSTEM]      whoami, date, uptime, history, top, df, free\n[NETWORK]     ping, curl, ip, ifconfig, ssh\n[FILE OPS]    mkdir, touch, rm, cp, mv, chmod, chown\n[PERSONAL]    about, skills, contact, projects, cv\n[FUN]         matrix, sudo, coffee, joke, vim\n\nType a command to execute.",
     "type": "info"
   },
   
   "ls": {
-    "response": "drwxr-xr-x  2 gadi root  4096 Feb 12 10:00 .\ndrwxr-xr-x  4 root root  4096 Feb 01 00:00 ..\n-rw-r--r--  1 gadi root   512 Feb 10 14:20 about.txt\n-rw-r--r--  1 gadi root  1024 Jan 15 09:30 skills.md\n-rwxr-xr-x  1 gadi root  8192 Feb 11 18:45 project_v2.py\n-rw-r--r--  1 gadi root   128 Feb 12 16:00 contact.info",
+    "response": "about.txt   skills.md   contact.info   projects/   cv.pdf   secrets/",
+    "type": "success"
+  },
+  "ls -a": {
+    "response": ".   ..   .bashrc   .git/   about.txt   skills.md   contact.info   projects/",
+    "type": "success"
+  },
+  "ls -la": {
+    "response": "total 64\ndrwxr-xr-x  2 gadi root  4096 Feb 12 10:00 .\ndrwxr-xr-x  4 root root  4096 Feb 01 00:00 ..\n-rw-r--r--  1 gadi root   512 Feb 10 14:20 about.txt\n-rw-r--r--  1 gadi root  1024 Jan 15 09:30 skills.md\n-rwxr-xr-x  1 gadi root  8192 Feb 11 18:45 projects/\n-rw-r--r--  1 gadi root   128 Feb 12 16:00 contact.info\n-r--------  1 root root  2048 Jan 01 00:00 .secrets",
     "type": "success"
   },
   "ll": {
-    "response": "Alias for 'ls'. Executing...\ndrwxr-xr-x  2 gadi root  4096 Feb 12 10:00 .",
+    "response": "total 64\ndrwxr-xr-x  2 gadi root  4096 Feb 12 10:00 .\n...",
     "type": "success"
   },
 
-  "about": {
-    "response": "NAME: Gadi Rapaport\nROLE: DevOps Engineer & Full Stack Developer\nLOCATION: Israel\n\nI specialize in building scalable infrastructure, automating pipelines, and creating intelligent applications. From Android Studio to Kubernetes clusters, I build things that work.",
+  "pwd": {
+    "response": "/home/gadi/portfolio",
     "type": "success"
+  },
+  "cd": {
+    "response": "Returned to /home/gadi",
+    "type": "info"
+  },
+  "cd ..": {
+    "response": "Access Denied: Restricted shell environment.",
+    "type": "error"
+  },
+  "cd ~": {
+    "response": "/home/gadi",
+    "type": "info"
+  },
+  "cd /": {
+    "response": "Permission denied.",
+    "type": "error"
+  },
+
+  "mkdir": {
+    "response": "usage: mkdir <directory_name>",
+    "type": "info"
+  },
+  "mkdir test": {
+    "response": "Directory 'test' created.",
+    "type": "success"
+  },
+  "touch": {
+    "response": "usage: touch <filename>",
+    "type": "info"
+  },
+  "rm": {
+    "response": "usage: rm <filename>",
+    "type": "info"
+  },
+  "rm -rf /": {
+    "response": "I'm sorry Dave, I'm afraid I can't do that.",
+    "type": "error"
+  },
+  "cp": {
+    "response": "Missing file operand.",
+    "type": "error"
+  },
+  "mv": {
+    "response": "Missing file operand.",
+    "type": "error"
+  },
+  "chmod": {
+    "response": "Changing permissions requires sudo.",
+    "type": "warn"
+  },
+  "chown": {
+    "response": "Operation not permitted.",
+    "type": "error"
+  },
+
+  "cat": {
+    "response": "usage: cat <filename>",
+    "type": "info"
   },
   "cat about.txt": {
-    "response": "NAME: Gadi Rapaport\nROLE: DevOps Engineer & Full Stack Developer\nLOCATION: Israel\n\nI specialize in building scalable infrastructure...",
-    "type": "success"
-  },
-  "skills": {
-    "response": "--- SKILLS MATRIX ---\n\n[LANGUAGES]   Python, Java, JavaScript, Bash, SQL\n[CONTAINERS]  Docker, Kubernetes, Helm\n[CLOUD]       AWS (EC2, S3, Lambda), Firebase\n[IAC]         Terraform, Ansible\n[CI/CD]       Jenkins, GitHub Actions\n[OS]          Linux (Ubuntu, Kali, CentOS), Android",
+    "response": "NAME: Gadi Rapaport\nROLE: DevOps Engineer\nFOCUS: Automation, Cloud, AI integration.",
     "type": "success"
   },
   "cat skills.md": {
-    "response": "Reading skills.md...\nPython, Java, Docker, K8s, Linux...",
+    "response": "# Technical Skills\n* Python / Java / Bash\n* Docker / K8s / Helm\n* AWS / Azure\n* Jenkins / GitHub Actions",
     "type": "success"
   },
-
-  "contact": {
-    "response": "📧 Email: dshrppury@gmail.com\n📞 Phone: 055-929-7328\n📍 Location: Bnei Brak, Israel\n💬 WhatsApp: Type 'whatsapp' to chat.",
-    "type": "info"
-  },
   "cat contact.info": {
-    "response": "Email: dshrppury@gmail.com | Phone: 055-929-7328",
+    "response": "Email: dshrppury@gmail.com\nPhone: 055-929-7328",
+    "type": "info"
+  },
+  "grep": {
+    "response": "usage: grep [options] pattern [files]",
+    "type": "info"
+  },
+  "man": {
+    "response": "What manual page do you want?",
     "type": "info"
   },
 
+  "about": {
+    "response": "I am Gadi Rapaport. DevOps Engineer | Python Developer | AI Enthusiast. I build scalable infrastructure.",
+    "type": "success"
+  },
+  "skills": {
+    "response": "[+] Python, Java, Bash\n[+] Docker, Kubernetes\n[+] CI/CD (Jenkins, Actions)\n[+] Cloud (AWS)\n[+] Linux Administration",
+    "type": "success"
+  },
   "projects": {
-    "response": "1. ByBis App (Android/Java) - Babysitting platform\n2. AI Shakespeare (Python/PyTorch) - Custom LLM\n3. Haredi Community App (Supabase) - Fullstack mobile solution\n4. Interactive Galaxy (WebGL) - You are looking at it.",
+    "response": "1. ByBis (Android)\n2. AI Shakespeare (LLM)\n3. Haredi App (Fullstack)\n4. Interactive Galaxy (WebGL)",
     "type": "info"
   },
-  
   "cv": {
     "response": "Downloading CV...",
     "type": "success",
     "action": "link:https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo"
   },
-  "resume": {
-    "response": "Downloading CV...",
-    "type": "success",
-    "action": "link:https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo"
-  },
-  
   "github": {
-    "response": "Opening GitHub profile...",
+    "response": "Opening GitHub...",
     "type": "success",
     "action": "link:https://github.com/gad-rapaport"
   },
-  "git": {
-    "response": "git: usage: git [--version] [--help] <command> [<args>]",
-    "type": "info"
-  },
-  "git status": {
-    "response": "On branch main\nYour branch is up to date with 'origin/main'.\nNothing to commit, working tree clean.",
-    "type": "info"
-  },
-  "git push": {
-    "response": "Everything up-to-date.",
-    "type": "success"
-  },
-
   "linkedin": {
-    "response": "Opening LinkedIn profile...",
+    "response": "Opening LinkedIn...",
     "type": "success",
     "action": "link:https://www.linkedin.com/in/gad-rapaport-a12988345"
   },
   "whatsapp": {
-    "response": "Opening WhatsApp chat...",
+    "response": "Opening Chat...",
     "type": "success",
     "action": "link:https://wa.me/972559297328"
   },
-  "social": {
-    "response": "Type 'github', 'linkedin', or 'whatsapp' to connect.",
-    "type": "info"
-  },
 
   "docker": {
-    "response": "Docker is running. 4 containers active.",
+    "response": "Docker is running.",
     "type": "success"
   },
   "docker ps": {
-    "response": "CONTAINER ID   IMAGE          COMMAND       STATUS\n8f3a2b1c4d     devops-port    \"/bin/bash\"   Up 24 hours\n7e2d1c5b9a     ai-brain       \"python3\"     Up 24 hours\n1a2b3c4d5e     postgres:14    \"entrypoint\"  Up 24 hours\n9z8y7x6w5v     redis:alpine   \"docker...\"   Up 24 hours",
+    "response": "CONTAINER ID   IMAGE        STATUS\n8f3a2b1c4d     portfolio    Up 24 hours\n7e2d1c5b9a     database     Up 24 hours",
     "type": "info"
   },
   "docker images": {
-    "response": "REPOSITORY    TAG       IMAGE ID       SIZE\ndevops-site   latest    a1b2c3d4e5     1.2GB\npython        3.9       f9e8d7c6b5     900MB",
+    "response": "REPOSITORY    TAG       SIZE\nportfolio     latest    1.2GB\npython        3.9       900MB",
     "type": "info"
   },
-
+  "docker-compose up": {
+    "response": "Creating network \"default\"\nCreating container \"db\" ... done\nCreating container \"web\" ... done",
+    "type": "success"
+  },
+  
   "k8s": {
-    "response": "Kubernetes cluster status: HEALTHY.",
+    "response": "Kubernetes cluster is healthy.",
     "type": "success"
   },
   "kubectl": {
@@ -110,67 +163,99 @@
     "type": "info"
   },
   "kubectl get pods": {
-    "response": "NAME             READY   STATUS    RESTARTS   AGE\nweb-app-v1       1/1     Running   0          2d\ndb-shard-0       1/1     Running   0          5d\nai-worker-gpu    1/1     Running   0          12h",
+    "response": "NAME         READY   STATUS    RESTARTS\nweb-v1       1/1     Running   0\ndb-0         1/1     Running   0",
     "type": "success"
   },
 
-  "python": {
-    "response": "Python 3.11.4 (main, Jun  7 2023, 10:45:35) [GCC 11.3.0]\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> print('Hello World')",
+  "git": {
+    "response": "git version 2.34.1",
     "type": "info"
   },
-  "python3": {
-    "response": "Python 3.11.4... (Interactive shell simulated)",
+  "git status": {
+    "response": "On branch main. Nothing to commit.",
+    "type": "info"
+  },
+  "git push": {
+    "response": "Everything up-to-date.",
+    "type": "success"
+  },
+  "git pull": {
+    "response": "Already up to date.",
+    "type": "success"
+  },
+  "git commit": {
+    "response": "Nothing to commit.",
+    "type": "warn"
+  },
+
+  "python": {
+    "response": "Python 3.11.4 Interactive Shell... >>>",
+    "type": "info"
+  },
+  "java": {
+    "response": "openjdk version \"17.0.7\" 2023-04-18",
+    "type": "info"
+  },
+  "node": {
+    "response": "v18.16.0",
     "type": "info"
   },
 
-  "linux": {
-    "response": "I use Arch btw. (Just kidding, mostly Ubuntu/Debian servers).",
+  "ping": {
+    "response": "usage: ping <host>",
     "type": "info"
   },
-  "uname -a": {
-    "response": "Linux gadi-server 5.15.0-76-generic #83-Ubuntu SMP x86_64 GNU/Linux",
+  "ping google.com": {
+    "response": "64 bytes from 142.250.185.78: time=14.2 ms\n64 bytes from 142.250.185.78: time=15.1 ms",
     "type": "info"
   },
+  "ping localhost": {
+    "response": "64 bytes from 127.0.0.1: time=0.03 ms",
+    "type": "info"
+  },
+  "curl": {
+    "response": "curl: try 'curl <url>'",
+    "type": "info"
+  },
+  "wget": {
+    "response": "wget: missing URL",
+    "type": "error"
+  },
+  "ssh": {
+    "response": "usage: ssh user@host",
+    "type": "info"
+  },
+  "ssh root@localhost": {
+    "response": "Connection refused.",
+    "type": "error"
+  },
+  "ifconfig": {
+    "response": "eth0: inet 192.168.1.105  netmask 255.255.255.0",
+    "type": "info"
+  },
+  "ip addr": {
+    "response": "2: eth0: <BROADCAST,MULTICAST,UP> inet 192.168.1.105/24",
+    "type": "info"
+  },
+
   "whoami": {
     "response": "root",
     "type": "success"
   },
-  "id": {
-    "response": "uid=0(root) gid=0(root) groups=0(root)",
+  "date": {
+    "response": "CURRENT_TIMESTAMP",
     "type": "info"
   },
-  "pwd": {
-    "response": "/home/gadi/portfolio",
-    "type": "success"
+  "uptime": {
+    "response": " 13:37:00 up 42 days, 1 user, load average: 0.00",
+    "type": "info"
   },
-  "cd": {
-    "response": "Access Denied: You are restricted to the portfolio directory.",
-    "type": "error"
+  "history": {
+    "response": "1  ls -la\n2  docker ps\n3  cat secrets.txt\n4  rm -rf /",
+    "type": "info"
   },
-  "cd ..": {
-    "response": "Access Denied: Stay here, it's safe.",
-    "type": "error"
-  },
-
-  "sudo": {
-    "response": "User is already root. No need to ask nicely.",
-    "type": "warn"
-  },
-  "sudo su": {
-    "response": "You are already superuser.",
-    "type": "warn"
-  },
-  "rm -rf /": {
-    "response": "I'm sorry Dave, I'm afraid I can't do that.",
-    "type": "error"
-  },
-  "rm": {
-    "response": "Permission denied.",
-    "type": "error"
-  },
-
   "top": {
-    "response": "Tasks: 137 total, 1 running, 136 sleeping, 0 stopped\n%Cpu(s):  2.5 us,  1.0 sy,  0.0 ni, 96.5 id\nPID USER      PR  NI  VIRT  RES  SHR S  %CPU %MEM     TIME+ COMMAND\n1   root      20   0  112m  14m 3000 S   0.0  0.1   1:22.45 systemd\n7   gadi      20   0  14.2g 1.1g 400m S   2.3 12.0  15:30.0 java",
+    "response": "PID USER      PR  NI  VIRT  RES  %CPU %MEM  COMMAND\n1   root      20   0  112m  14m   0.0  0.1  systemd\n7   gadi      20   0  14.2g 1.1g  2.3 12.0  java",
     "type": "info"
   },
   "htop": {
@@ -181,51 +266,55 @@
     "response": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1       500G  300G  200G  60% /",
     "type": "info"
   },
-  "free -m": {
-    "response": "              total        used        free      shared  buff/cache   available\nMem:          32000        8000       24000         100        2000       22000",
+  "free -h": {
+    "response": "              total        used        free\nMem:           32Gi         8Gi        24Gi",
     "type": "info"
   },
+  "ps": {
+    "response": "  PID TTY          TIME CMD\n 5234 pts/0    00:00:00 bash\n 5235 pts/0    00:00:00 ps",
+    "type": "info"
+  },
+  "reboot": {
+    "response": "System critical. Cannot reboot.",
+    "type": "error"
+  },
+  "shutdown": {
+    "response": "Shutdown scheduled for Mon 2026-02-12 10:00:00",
+    "type": "warn"
+  },
 
+  "sudo": {
+    "response": "User is already root.",
+    "type": "warn"
+  },
+  "sudo su": {
+    "response": "Already root.",
+    "type": "warn"
+  },
+  "su": {
+    "response": "Authentication failure",
+    "type": "error"
+  },
+  
   "vim": {
-    "response": "Entering Vim...\nJust kidding. I won't trap you here. (Press Esc to panic)",
+    "response": "You are trapped in Vim. (Just kidding, press Esc)",
     "type": "warn"
   },
   "nano": {
-    "response": "Nano is for beginners. Learn Vim.",
+    "response": "Nano editor opened.",
     "type": "info"
   },
-  "emacs": {
-    "response": "Command not found. We don't do that here.",
-    "type": "error"
-  },
-
   "matrix": {
-    "response": "Wake up, Neo...\nThe Matrix has you...",
-    "type": "success"
-  },
-  "joke": {
-    "response": "Why do programmers prefer dark mode?\nBecause light attracts bugs.",
+    "response": "Wake up, Neo...",
     "type": "success"
   },
   "coffee": {
-    "response": "☕ Brewing java... Done.",
+    "response": "☕ Here is your Java.",
     "type": "success"
   },
   "beer": {
     "response": "🍺 Cheers!",
     "type": "success"
-  },
-  "love": {
-    "response": "404: Love not found. Try 'coding'.",
-    "type": "error"
-  },
-  "date": {
-    "response": "CURRENT_TIMESTAMP",
-    "type": "info"
-  },
-  "uptime": {
-    "response": " 10:00:00 up 100 days, 1 user, load average: 0.00, 0.01, 0.05",
-    "type": "info"
   },
   "clear": {
     "response": "Clearing...",
@@ -233,53 +322,7 @@
     "action": "clear"
   },
   "exit": {
-    "response": "There is no escape.",
+    "response": "Logout not allowed.",
     "type": "error"
-  },
-  "reboot": {
-    "response": "System critical. Cannot reboot portfolio.",
-    "type": "error"
-  },
-  
-  "aws": {
-    "response": "AWS CLI configured. Region: us-east-1.",
-    "type": "info"
-  },
-  "terraform": {
-    "response": "Terraform v1.5.0\nYour infrastructure is code.",
-    "type": "success"
-  },
-  "ansible": {
-    "response": "Ansible playbook 'site.yml' executed successfully.",
-    "type": "success"
-  },
-  "jenkins": {
-    "response": "Build #42: SUCCESS (Duration: 2m 15s)",
-    "type": "success"
-  },
-
-  "ping": {
-    "response": "pong",
-    "type": "info"
-  },
-  "ping google.com": {
-    "response": "64 bytes from 142.250.185.78: icmp_seq=1 ttl=116 time=14.2 ms\n64 bytes from 142.250.185.78: icmp_seq=2 ttl=116 time=15.1 ms",
-    "type": "info"
-  },
-  "ip": {
-    "response": "192.168.1.105",
-    "type": "info"
-  },
-  "ifconfig": {
-    "response": "eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500\ninet 192.168.1.105  netmask 255.255.255.0  broadcast 192.168.1.255",
-    "type": "info"
-  },
-  "curl": {
-    "response": "curl: try 'curl <url>'",
-    "type": "info"
-  },
-  "curl google.com": {
-    "response": "<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">...",
-    "type": "info"
   }
 }
