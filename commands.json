@@ -1,0 +1,50 @@
+{
+  "help": {
+    "response": "Available commands: about, skills, contact, projects, clear, whoami, sudo, date, git status, deploy, docker ps, uptime, rm -rf /",
+    "type": "info"
+  },
+  "about": {
+    "response": "I am Gadi Rapaport. DevOps Engineer | Python Developer | AI Enthusiast. I build scalable infrastructure and intelligent systems.",
+    "type": "success"
+  },
+  "skills": {
+    "response": "Loading skills matrix...\n[+] Python & Scripting\n[+] Docker & Kubernetes\n[+] CI/CD Pipelines (Jenkins/GitHub Actions)\n[+] Linux Administration\n[+] Cloud Computing (AWS)",
+    "type": "success"
+  },
+  "contact": {
+    "response": "Email: dshrppury@gmail.com\nPhone: 055-929-7328\nLocation: Bnei Brak, Israel",
+    "type": "info"
+  },
+  "projects": {
+    "response": "1. ByBis (Android)\n2. AI Shakespeare (LLM)\n3. Haredi App (Fullstack)\n4. Interactive Galaxy (WebGL)",
+    "type": "info"
+  },
+  "sudo": {
+    "response": "User 'gadi' is already root. You have full control.",
+    "type": "warn"
+  },
+  "git status": {
+    "response": "On branch main\nYour branch is up to date with 'origin/main'.\nNothing to commit, working tree clean.",
+    "type": "info"
+  },
+  "whoami": {
+    "response": "root (Admin)",
+    "type": "success"
+  },
+  "docker ps": {
+    "response": "CONTAINER ID   IMAGE          COMMAND       STATUS\n8f3a2b1c4d     devops-port    \"/bin/bash\"   Up 24 hours\n7e2d1c5b9a     ai-brain       \"python3\"     Up 24 hours",
+    "type": "info"
+  },
+  "uptime": {
+    "response": " 13:37:00 up 42 days, 1 user, load average: 0.00, 0.01, 0.05",
+    "type": "info"
+  },
+  "deploy": {
+    "response": "Initiating deployment sequence...\n> Building Docker image...\n> Pushing to registry...\n> Deploying to K8s cluster...\n[SUCCESS] Deployment complete.",
+    "type": "success"
+  },
+  "rm -rf /": {
+    "response": "Permission denied. I can't let you delete my existence, Gadi.",
+    "type": "error"
+  }
+}
