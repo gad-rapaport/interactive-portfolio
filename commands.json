@@ -324,7 +324,7 @@
   "exit": {
     "response": "Logout not allowed.",
     "type": "error"
-  }
+  },
   "joke": {
     "response": "It works on my machine....",
     "type": "info"
