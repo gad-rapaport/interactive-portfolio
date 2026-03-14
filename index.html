@@ -445,7 +445,6 @@
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             
-            // גודל פונט גדול ועובי משמעותי
             ctx.font = 'bold 220px Montserrat'; 
             ctx.fillStyle = 'white';
             ctx.textAlign = 'center';
@@ -455,7 +454,6 @@
             const imageData = ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
             const points = [];
 
-            // דגימה צפופה יותר (קפיצות של 3 במקום 4)
             for (let y = 0; y < tempCanvas.height; y += 3) {
                 for (let x = 0; x < tempCanvas.width; x += 3) {
                     const index = (y * tempCanvas.width + x) * 4;
@@ -463,7 +461,7 @@
                         points.push({
                             x: (x - tempCanvas.width / 2) * 1.6,
                             y: -(y - tempCanvas.height / 2) * 1.6,
-                            z: (Math.random() - 0.5) * 5 // עומק שטוח במיוחד למראה של "קיר" חד
+                            z: (Math.random() - 0.5) * 5 
                         });
                     }
                 }
@@ -496,18 +494,57 @@
         const termContainer = document.getElementById('term-container');
         
         const availableCommands = {
-            "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat\n[DEVOPS]      docker, k8s, aws, git\n[SYSTEM]      whoami, date, uptime, top\n[PERSONAL]    about, skills, contact, cv\n[FUN]         render <text>, matrix, clear\n\nType a command to execute.", "type": "info" },
+            "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat, tree\n[DEVOPS]      docker, k8s, aws, git, terraform\n[SYSTEM]      whoami, date, uptime, top, ping\n[PERSONAL]    about, skills, contact, cv, github, linkedin\n[FUN]         render <text>, matrix, clear, sudo, coffee, joke\n\nType a command to execute.", "type": "info" },
+            
+            // Navigation
             "ls": { "response": "about.txt   skills.md   contact.info   projects/   cv.pdf", "type": "success" },
+            "ls -la": { "response": "drwxr-xr-x 2 gadi root 4096 Mar 15 12:00 .\n-rw-r--r-- 1 gadi root  512 Mar 15 12:00 about.txt\n-rw-r--r-- 1 gadi root 1024 Mar 15 12:00 skills.md\n-rw-r--r-- 1 gadi root  128 Mar 15 12:00 contact.info\ndrwxr-xr-x 3 gadi root 4096 Mar 15 12:00 projects\n-rwxr-xr-x 1 gadi root 8192 Mar 15 12:00 cv.pdf", "type": "success" },
             "pwd": { "response": "/home/gadi/portfolio", "type": "success" },
+            "cd": { "response": "Returned to /home/gadi", "type": "info" },
+            "cd ..": { "response": "Access Denied: Restricted shell environment.", "type": "error" },
+            "cd ~": { "response": "/home/gadi", "type": "info" },
+            "tree": { "response": ".\n├── about.txt\n├── skills.md\n├── contact.info\n├── cv.pdf\n└── projects\n    ├── bybis_app\n    └── haredi_community", "type": "success" },
+            
+            // Files
+            "cat": { "response": "usage: cat <filename>", "type": "info" },
+            "cat about.txt": { "response": "NAME: Gadi Rapaport\nROLE: DevOps Engineer\nFOCUS: Automation, Cloud, AI integration.", "type": "success" },
+            "cat skills.md": { "response": "# Technical Skills\n* Python / Java / Bash\n* Docker / K8s / Helm\n* AWS / Azure\n* Jenkins / GitHub Actions", "type": "success" },
+            "cat contact.info": { "response": "Email: dshrppury@gmail.com\nPhone: 055-929-7328\nLocation: Bnei Brak, Israel", "type": "success" },
+            
+            // Personal
             "about": { "response": "I am Gadi Rapaport. DevOps Engineer | Python Developer | AI Enthusiast.", "type": "success" },
             "skills": { "response": "[+] Python, Java, Bash\n[+] Docker, Kubernetes\n[+] CI/CD, AWS\n[+] Linux Administration", "type": "success" },
+            "contact": { "response": "Email: dshrppury@gmail.com | Phone: 055-929-7328 | Bnei Brak", "type": "success" },
             "cv": { "response": "Downloading CV...", "type": "success", "action": "link:https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo" },
-            "docker": { "response": "Docker is running.", "type": "success" },
-            "docker ps": { "response": "CONTAINER ID   IMAGE        STATUS\n8f3a2b1c4d     portfolio    Up 24 hours", "type": "info" },
-            "k8s": { "response": "Kubernetes cluster is healthy.", "type": "success" },
+            "github": { "response": "Opening GitHub...", "type": "success", "action": "link:https://github.com/gad-rapaport" },
+            "linkedin": { "response": "Opening LinkedIn...", "type": "success", "action": "link:https://www.linkedin.com/in/gad-rapaport-a12988345" },
+            
+            // System & Network
             "whoami": { "response": "root", "type": "success" },
             "date": { "response": new Date().toString(), "type": "info" },
-            "clear": { "response": "Clearing...", "type": "info", "action": "clear" }
+            "uptime": { "response": " 13:37:00 up 42 days, 1 user, load average: 0.00, 0.01, 0.05", "type": "info" },
+            "top": { "response": "PID USER      PR  NI  VIRT  RES  %CPU %MEM  COMMAND\n  1 root      20   0  112m  14m   0.0  0.1  systemd\n  7 gadi      20   0 14.2g 1.1g   2.3 12.0  java", "type": "info" },
+            "ping": { "response": "usage: ping <destination>", "type": "info" },
+            "ping google.com": { "response": "64 bytes from 142.250.185.78: icmp_seq=1 ttl=117 time=14.2 ms\n64 bytes from 142.250.185.78: icmp_seq=2 ttl=117 time=15.1 ms", "type": "success" },
+            "curl": { "response": "curl: try 'curl --help' or 'curl --manual' for more information", "type": "info" },
+            
+            // DevOps
+            "docker": { "response": "Docker version 24.0.5, build ced0996", "type": "success" },
+            "docker ps": { "response": "CONTAINER ID   IMAGE        STATUS\n8f3a2b1c4d     portfolio    Up 24 hours\n7e2d1c5b9a     database     Up 24 hours", "type": "info" },
+            "k8s": { "response": "Kubernetes cluster is healthy.", "type": "success" },
+            "kubectl get pods": { "response": "NAME         READY   STATUS    RESTARTS\nweb-v1       1/1     Running   0\ndb-0         1/1     Running   0", "type": "success" },
+            "aws": { "response": "aws-cli/2.13.0 Python/3.11.4 Linux/5.15.0", "type": "info" },
+            "git": { "response": "usage: git [--version] [--help] [-C <path>] <command> [<args>]", "type": "info" },
+            "git status": { "response": "On branch main\nYour branch is up to date with 'origin/main'.\n\nnothing to commit, working tree clean", "type": "success" },
+            "terraform": { "response": "Terraform v1.5.7\non linux_amd64", "type": "info" },
+            
+            // Fun
+            "clear": { "response": "Clearing...", "type": "info", "action": "clear" },
+            "sudo": { "response": "gadi is not in the sudoers file. This incident will be reported.", "type": "error" },
+            "sudo rm -rf /": { "response": "Nice try. I'm afraid I can't do that.", "type": "error" },
+            "coffee": { "response": "☕ Here is your Java.", "type": "success" },
+            "joke": { "response": "Why do programmers prefer dark mode? Because light attracts bugs.", "type": "info" },
+            "vim": { "response": "You are trapped in Vim. (Just kidding, press Esc)", "type": "warn" }
         };
 
         const bootSequence = [
@@ -713,7 +750,6 @@
 
             if (isTextMode) {
                 material.color.lerp(colText, 0.1);
-                // הגדלת החלקיקים והפיכתם לאטומים כשיש טקסט
                 material.size += (7.0 - material.size) * 0.1;
                 material.opacity += (1.0 - material.opacity) * 0.1;
 
