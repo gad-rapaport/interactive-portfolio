@@ -20,6 +20,7 @@
             --accent-blue: #00C2FF; 
             --accent-purple: #BD00FF;
             --accent-red: #D90429;
+            --accent-matrix: #00FF41;
             --terminal-bg: rgba(15, 15, 20, 0.95);
         }
 
@@ -30,6 +31,7 @@
             background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
             color: white; font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            transition: background 1s ease;
         }
 
         /* CUSTOM CURSOR */
@@ -37,10 +39,22 @@
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
             border: 2px solid var(--accent-blue); border-radius: 50%;
             pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s;
+            transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
             mix-blend-mode: difference;
         }
         #cursor.hovered { width: 50px; height: 50px; background: rgba(0, 194, 255, 0.2); border-color: transparent; }
+
+        /* MATRIX MODE STYLES */
+        body.matrix-active #cursor { border-color: var(--accent-matrix); }
+        body.matrix-active #cursor.hovered { background: rgba(0, 255, 65, 0.2); }
+        body.matrix-active .terminal-window {
+            border-color: var(--accent-matrix);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+        }
+        body.matrix-active .prompt { color: var(--accent-matrix); text-shadow: 0 0 5px var(--accent-matrix); }
+        body.matrix-active .info { color: #a9b1d6; }
+        body.matrix-active .terminal-header { border-bottom-color: var(--accent-matrix); }
+        body.matrix-active h1 span { color: var(--accent-matrix) !important; text-shadow: 0 0 20px rgba(0,255,65,0.4); }
 
         canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; }
 
@@ -70,23 +84,24 @@
             border: 1px solid #333; border-radius: 8px; margin-top: 30px;
             font-family: 'Fira Code', monospace; padding: 0; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6); opacity: 0; transform: translateY(20px);
-            text-align: left;
+            text-align: left; transition: all 0.4s ease;
         }
         .terminal-header {
             background: #1a1b26; padding: 8px 15px; display: flex; gap: 6px;
-            border-bottom: 1px solid #333; align-items: center;
+            border-bottom: 1px solid #333; align-items: center; transition: 0.4s ease;
         }
         .term-dot { width: 10px; height: 10px; border-radius: 50%; }
         .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
         .terminal-body { 
             padding: 15px; color: #a9b1d6; font-size: 0.9rem; height: 300px; overflow-y: auto; 
-            cursor: text;
+            cursor: text; scroll-behavior: smooth;
         }
         .cmd-line { margin-bottom: 5px; display: block; line-height: 1.4; white-space: pre-wrap; }
         .success { color: #9ece6a; } .warn { color: #e0af68; } .info { color: #7aa2f7; } .error { color: #f7768e; }
+        .matrix-text { color: var(--accent-matrix); text-shadow: 0 0 8px var(--accent-matrix); }
         
         .input-line { display: flex; align-items: center; }
-        .prompt { color: #7aa2f7; margin-right: 8px; font-weight: bold; }
+        .prompt { color: #7aa2f7; margin-right: 8px; font-weight: bold; transition: 0.4s ease; }
         #cmd-input {
             background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace;
             font-size: 0.9rem; flex: 1; outline: none; cursor: none;
@@ -254,11 +269,11 @@
 
     <section id="home">
         <div class="hero-logo-container">
-            <img src="logo.png" alt="Gadi Logo" class="hero-logo-img">
+            <img src="logo.png" alt="Gadi Logo" class="hero-logo-img" id="main-logo">
         </div>
         
         <h1 style="font-size: 2rem; margin-bottom: 0; opacity: 0.6; font-weight: 400;">GAD RAPAPORT</h1>
-        <h1>DevOps &<br><span style="color:var(--accent-blue)">AI Innovation</span></h1>
+        <h1>DevOps &<br><span>AI Innovation</span></h1>
         
         <p class="subtitle"><span id="typewriter"></span><span class="cursor-blink">&nbsp;</span></p>
         
@@ -266,7 +281,7 @@
             <i class="fas fa-file-download"></i> DOWNLOAD CV
         </a>
 
-        <div class="terminal-window interactive" onclick="document.getElementById('cmd-input').focus()">
+        <div class="terminal-window interactive" id="term-container" onclick="document.getElementById('cmd-input').focus()">
             <div class="terminal-header">
                 <div class="term-dot red"></div>
                 <div class="term-dot yellow"></div>
@@ -376,8 +391,8 @@
         const randomOffsets = new Float32Array(particleCount * 3);
         const sphereCoords = new Float32Array(particleCount * 3); 
         
-        // משתנים חדשים עבור אפקט הטקסט
         let isTextMode = false;
+        let isMatrixMode = false;
         let textTimeout;
         const textTargets = new Float32Array(particleCount * 3);
         
@@ -471,7 +486,6 @@
                     textTargets[i3 + 1] = points[i].y;
                     textTargets[i3 + 2] = points[i].z;
                 } else {
-                    // שולח את שארית החלקיקים לרקע
                     textTargets[i3] = originalPos[i3];
                     textTargets[i3 + 1] = originalPos[i3 + 1];
                     textTargets[i3 + 2] = originalPos[i3 + 2];
@@ -481,16 +495,17 @@
             isTextMode = true;
             clearTimeout(textTimeout);
             
-            // חזרה למצב הגלקסיה הרגיל אחרי 5 שניות
+            // השהיה ואז חזרה למצב רגיל
             textTimeout = setTimeout(() => {
                 isTextMode = false;
             }, 5000);
         }
 
-        // --- 2. TERMINAL LOGIC (Robust) ---
+        // --- 2. TERMINAL LOGIC ---
         const terminalBody = document.getElementById('terminal-body');
         const inputLine = document.getElementById('input-line');
         const cmdInput = document.getElementById('cmd-input');
+        const termContainer = document.getElementById('term-container');
         
         let availableCommands = {};
 
@@ -504,8 +519,8 @@
             { text: "> Loading configuration... [OK]", class: "cmd-line success", delay: 300 },
             { text: "> Connecting to neural interface... [OK]", class: "cmd-line success", delay: 600 },
             { text: "> Starting interactive shell...", class: "cmd-line info", delay: 900 },
-            { text: 'New feature: type "render <your_word>" to control particles.', class: "cmd-line warn", delay: 1200 },
-            { text: 'Type "help" to see available commands.', class: "cmd-line warn", delay: 1500 }
+            { text: 'Type "render <word>" to build 3D text.', class: "cmd-line warn", delay: 1200 },
+            { text: 'Type "matrix" for a surprise.', class: "cmd-line matrix-text", delay: 1500 }
         ];
 
         function runBoot() {
@@ -547,16 +562,39 @@
                     setTimeout(()=> this.focus(), 10); 
                     return;
                 } 
-                // תפיסת הפקודה החדשה render
+                // --- פקודת רנדר (עם העלמת הטרמינל) ---
                 else if (cmd.startsWith('render ')) {
                     const word = rawCmd.substring(7).trim();
                     if(word.length > 0) {
                         triggerTextEffect(word);
                         responseText = `Rendering particle text: ${word}...`;
                         respClass = 'success';
+                        
+                        // העלמת הטרמינל
+                        gsap.to(termContainer, { opacity: 0, scale: 0.9, duration: 0.5, pointerEvents: "none" });
+                        
+                        // חזרת הטרמינל אחרי שהאפקט נגמר
+                        setTimeout(() => {
+                            gsap.to(termContainer, { opacity: 1, scale: 1, duration: 0.5, pointerEvents: "auto" });
+                            cmdInput.focus();
+                        }, 5500);
+
                     } else {
                         responseText = 'Usage: render <text>';
                         respClass = 'error';
+                    }
+                }
+                // --- פקודת מטריקס המיוחדת ---
+                else if (cmd === 'matrix') {
+                    isMatrixMode = !isMatrixMode;
+                    if(isMatrixMode) {
+                        document.body.classList.add('matrix-active');
+                        responseText = 'System overridden. Welcome to the Matrix.';
+                        respClass = 'matrix-text';
+                    } else {
+                        document.body.classList.remove('matrix-active');
+                        responseText = 'Matrix mode disabled. Returning to normal...';
+                        respClass = 'info';
                     }
                 }
                 else if (availableCommands[cmd]) {
@@ -566,10 +604,6 @@
                     respClass = availableCommands[cmd].type || 'info';
                     action = availableCommands[cmd].action;
                 } 
-                else if (cmd.startsWith('cat ')) {
-                     responseText = `cat: ${cmd.split(' ')[1]}: No such file or directory`;
-                     respClass = 'error';
-                }
                 else if (cmd !== '') {
                     responseText = `bash: ${cmd}: command not found. Try "help".`;
                     respClass = 'error';
@@ -602,7 +636,7 @@
 
         gsap.from("#home h1", { opacity: 0, y: 50, duration: 2, delay: 0.5, ease: "power3.out" });
         gsap.from(".hero-logo-img", { opacity: 0, scale: 0.8, duration: 1.5, delay: 0.2, ease: "back.out(1.7)" });
-        gsap.to(".terminal-window", { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: runBoot });
+        gsap.to(termContainer, { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: runBoot });
         gsap.to(".card", { scrollTrigger: { trigger: "#projects", start: "top 70%" }, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" });
         gsap.to(".contact-container", { scrollTrigger: { trigger: "#contact", start: "top 80%" }, opacity: 1, y: 0, duration: 1, ease: "back.out(1.7)" });
 
@@ -688,7 +722,8 @@
         // --- לולאת האנימציה הראשית ---
         const colBase = new THREE.Color(0x00C2FF); 
         const colSphere = new THREE.Color(0xBD00FF); 
-        const colText = new THREE.Color(0x44FF88); // צבע ירוק לאפקט הטקסט
+        const colText = new THREE.Color(0x44FF88); 
+        const colMatrix = new THREE.Color(0x00FF41);
 
         function animate() {
             requestAnimationFrame(animate);
@@ -697,9 +732,9 @@
             smoothedTarget.lerp(handTarget, 0.1); 
 
             if (isTextMode) {
-                // מצב טקסט
+                // מצב טקסט (Render)
                 material.color.lerp(colText, 0.1);
-                starSystem.rotation.y += (0 - starSystem.rotation.y) * 0.1; // יישור מצלמה מול הטקסט
+                starSystem.rotation.y += (0 - starSystem.rotation.y) * 0.1; 
                 starSystem.rotation.x += (0 - starSystem.rotation.x) * 0.1;
                 
                 for(let i=0; i<particleCount; i++) {
@@ -709,7 +744,26 @@
                     pos[i3+2] += (textTargets[i3+2] - pos[i3+2]) * 0.08;
                 }
             } 
+            else if (isMatrixMode) {
+                // מצב מטריקס
+                material.color.lerp(colMatrix, 0.1);
+                starSystem.rotation.y = 0;
+                starSystem.rotation.x = 0;
+                
+                for(let i=0; i<particleCount; i++) {
+                    const i3 = i*3;
+                    // החלקיקים נופלים למטה
+                    pos[i3+1] -= (10 + Math.random() * 20);
+                    // כשהם יוצאים מהמסך, חוזרים למעלה
+                    if (pos[i3+1] < -3000) {
+                        pos[i3+1] = 3000;
+                        pos[i3] = originalPos[i3];
+                        pos[i3+2] = originalPos[i3+2];
+                    }
+                }
+            }
             else if(isHandDetected && isCameraRunning) {
+                // מצב זיהוי תנועה רגיל
                 material.color.lerp(isFist ? colSphere : colBase, 0.1);
                 
                 for(let i=0; i<particleCount; i++) {
