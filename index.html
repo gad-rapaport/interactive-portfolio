@@ -18,7 +18,7 @@
         :root {
             --bg-deep: #020617; 
             --accent-blue: #00C2FF; 
-            --accent-apple: #E63946; /* Apple Red */
+            --accent-apple: #E63946; 
             --accent-red: #D90429;
             --accent-matrix: #00FF41;
             --terminal-bg: rgba(15, 15, 20, 0.95);
@@ -349,7 +349,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <script>
-        // --- 1. CUSTOM CURSOR LOGIC ---
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
@@ -360,7 +359,6 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        // --- PARTICLE SYSTEM SETUP ---
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x020617, 0.0008);
 
@@ -390,7 +388,6 @@
 
         for(let i=0; i<particleCount; i++) {
             const i3 = i * 3;
-            // צורת גלקסיה מקורית
             const r = Math.random() * spread;
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos((Math.random() * 2) - 1);
@@ -407,30 +404,27 @@
             randomOffsets[i3+1] = cloudR * Math.sin(phi) * Math.sin(theta);
             randomOffsets[i3+2] = cloudR * Math.cos(phi);
 
-            // --- צורת תפוח (Apple Shape) ---
-            const phiA = Math.acos(1 - 2 * (i + 0.5) / particleCount); // 0 עד PI
+            const phiA = Math.acos(1 - 2 * (i + 0.5) / particleCount); 
             const thetaA = Math.PI * (1 + Math.sqrt(5)) * i;
             const R = 320;
-            
-            // יצירת השקע למעלה ולמטה (נוסחה מתמטית לתפוח)
             const dimple = 1 - 0.3 * Math.pow(Math.sin(phiA), 2);
             const rApple = R * dimple;
             
             appleCoords[i3] = rApple * Math.sin(phiA) * Math.cos(thetaA);
-            appleCoords[i3+1] = rApple * Math.cos(phiA); // ציר ה-Y
+            appleCoords[i3+1] = rApple * Math.cos(phiA); 
             appleCoords[i3+2] = rApple * Math.sin(phiA) * Math.sin(thetaA);
         }
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
         const getTexture = () => {
-            const c = document.createElement('canvas'); c.width=32; c.height=32;
+            const c = document.createElement('canvas'); c.width=64; c.height=64;
             const ctx = c.getContext('2d');
-            const g = ctx.createRadialGradient(16,16,0,16,16,16);
+            const g = ctx.createRadialGradient(32,32,0,32,32,32);
             g.addColorStop(0, 'rgba(255,255,255,1)');
-            g.addColorStop(0.5, 'rgba(255,255,255,0.1)');
+            g.addColorStop(0.3, 'rgba(255,255,255,0.8)');
             g.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = g; ctx.fillRect(0,0,32,32);
+            ctx.fillStyle = g; ctx.fillRect(0,0,64,64);
             const t = new THREE.Texture(c); t.needsUpdate = true; return t;
         }
 
@@ -442,7 +436,6 @@
         const starSystem = new THREE.Points(geometry, material);
         scene.add(starSystem);
 
-        // --- יצירת הטקסט למרחב 3D ---
         function triggerTextEffect(text) {
             const tempCanvas = document.createElement('canvas');
             const ctx = tempCanvas.getContext('2d');
@@ -452,7 +445,8 @@
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             
-            ctx.font = 'bold 200px Montserrat'; // הגדלתי את הפונט
+            // גודל פונט גדול ועובי משמעותי
+            ctx.font = 'bold 220px Montserrat'; 
             ctx.fillStyle = 'white';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -461,14 +455,15 @@
             const imageData = ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
             const points = [];
 
-            for (let y = 0; y < tempCanvas.height; y += 4) {
-                for (let x = 0; x < tempCanvas.width; x += 4) {
+            // דגימה צפופה יותר (קפיצות של 3 במקום 4)
+            for (let y = 0; y < tempCanvas.height; y += 3) {
+                for (let x = 0; x < tempCanvas.width; x += 3) {
                     const index = (y * tempCanvas.width + x) * 4;
                     if (imageData[index] > 128) { 
                         points.push({
-                            x: (x - tempCanvas.width / 2) * 1.5,
-                            y: -(y - tempCanvas.height / 2) * 1.5,
-                            z: (Math.random() - 0.5) * 50 // מיקום Z שטוח וברור
+                            x: (x - tempCanvas.width / 2) * 1.6,
+                            y: -(y - tempCanvas.height / 2) * 1.6,
+                            z: (Math.random() - 0.5) * 5 // עומק שטוח במיוחד למראה של "קיר" חד
                         });
                     }
                 }
@@ -495,13 +490,11 @@
             }, 6000);
         }
 
-        // --- 2. TERMINAL LOGIC WITH EMBEDDED COMMANDS ---
         const terminalBody = document.getElementById('terminal-body');
         const inputLine = document.getElementById('input-line');
         const cmdInput = document.getElementById('cmd-input');
         const termContainer = document.getElementById('term-container');
         
-        // כל הפקודות עכשיו יושבות בתוך הקוד, אין בעיות CORS לעולם!
         const availableCommands = {
             "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat\n[DEVOPS]      docker, k8s, aws, git\n[SYSTEM]      whoami, date, uptime, top\n[PERSONAL]    about, skills, contact, cv\n[FUN]         render <text>, matrix, clear\n\nType a command to execute.", "type": "info" },
             "ls": { "response": "about.txt   skills.md   contact.info   projects/   cv.pdf", "type": "success" },
@@ -571,7 +564,6 @@
                         responseText = `Rendering text: ${word}...`;
                         respClass = 'success';
                         
-                        // העלמת הטרמינל כדי לראות את האפקט
                         gsap.to(termContainer, { opacity: 0, y: 100, scale: 0.8, duration: 0.8, pointerEvents: "none", ease: "power3.in" });
                         
                         setTimeout(() => {
@@ -644,7 +636,6 @@
             });
         });
 
-        // --- 4. HAND TRACKING ---
         let isCameraRunning = false;
         let isHandDetected = false;
         let isFist = false;
@@ -709,9 +700,8 @@
             }
         });
 
-        // --- לולאת האנימציה הראשית ---
         const colBase = new THREE.Color(0x00C2FF); 
-        const colApple = new THREE.Color(0xE63946); // Apple Red
+        const colApple = new THREE.Color(0xE63946); 
         const colText = new THREE.Color(0x44FF88); 
         const colMatrix = new THREE.Color(0x00FF41);
 
@@ -722,8 +712,11 @@
             smoothedTarget.lerp(handTarget, 0.1); 
 
             if (isTextMode) {
-                // יישור מיידי ומושלם של הטקסט מול המצלמה, למרות הגלילה!
                 material.color.lerp(colText, 0.1);
+                // הגדלת החלקיקים והפיכתם לאטומים כשיש טקסט
+                material.size += (7.0 - material.size) * 0.1;
+                material.opacity += (1.0 - material.opacity) * 0.1;
+
                 starSystem.rotation.x += (0 - starSystem.rotation.x) * 0.1;
                 starSystem.rotation.y += (0 - starSystem.rotation.y) * 0.1;
                 starSystem.rotation.z += (0 - starSystem.rotation.z) * 0.1; 
@@ -737,6 +730,9 @@
             } 
             else if (isMatrixMode) {
                 material.color.lerp(colMatrix, 0.1);
+                material.size += (4.0 - material.size) * 0.1;
+                material.opacity += (0.9 - material.opacity) * 0.1;
+
                 starSystem.rotation.y = 0; starSystem.rotation.x = 0; starSystem.rotation.z = 0;
                 
                 for(let i=0; i<particleCount; i++) {
@@ -749,6 +745,8 @@
             }
             else if(isHandDetected && isCameraRunning) {
                 material.color.lerp(isFist ? colApple : colBase, 0.1);
+                material.size += (5.0 - material.size) * 0.1;
+                material.opacity += (0.9 - material.opacity) * 0.1;
                 
                 for(let i=0; i<particleCount; i++) {
                     const i3 = i*3;
@@ -786,6 +784,9 @@
                 }
             } else {
                 material.color.lerp(colBase, 0.05);
+                material.size += (3.5 - material.size) * 0.1;
+                material.opacity += (0.8 - material.opacity) * 0.1;
+
                 for(let i=0; i<particleCount; i++) {
                     const i3 = i*3;
                     const ox = originalPos[i3]; const oy = originalPos[i3+1]; const oz = originalPos[i3+2];
