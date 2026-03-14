@@ -18,7 +18,7 @@
         :root {
             --bg-deep: #020617; 
             --accent-blue: #00C2FF; 
-            --accent-purple: #BD00FF;
+            --accent-apple: #E63946; /* Apple Red */
             --accent-red: #D90429;
             --accent-matrix: #00FF41;
             --terminal-bg: rgba(15, 15, 20, 0.95);
@@ -34,7 +34,6 @@
             transition: background 1s ease;
         }
 
-        /* CUSTOM CURSOR */
         #cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
             border: 2px solid var(--accent-blue); border-radius: 50%;
@@ -44,7 +43,6 @@
         }
         #cursor.hovered { width: 50px; height: 50px; background: rgba(0, 194, 255, 0.2); border-color: transparent; }
 
-        /* MATRIX MODE STYLES */
         body.matrix-active #cursor { border-color: var(--accent-matrix); }
         body.matrix-active #cursor.hovered { background: rgba(0, 255, 65, 0.2); }
         body.matrix-active .terminal-window {
@@ -58,7 +56,6 @@
 
         canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; }
 
-        /* NAV */
         nav {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
             padding: 10px 30px; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
@@ -73,18 +70,16 @@
         }
         .nav-item:hover, .nav-item.active { color: var(--accent-blue); text-shadow: 0 0 10px var(--accent-blue); }
 
-        /* HERO LOGO */
         .hero-logo-container { margin-bottom: 20px; animation: float 6s ease-in-out infinite; }
         .hero-logo-img { height: 120px; width: auto; filter: drop-shadow(0 0 20px rgba(217, 4, 41, 0.4)); }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
-        /* TERMINAL */
         .terminal-window {
             width: 100%; max-width: 650px; background: var(--terminal-bg);
             border: 1px solid #333; border-radius: 8px; margin-top: 30px;
             font-family: 'Fira Code', monospace; padding: 0; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6); opacity: 0; transform: translateY(20px);
-            text-align: left; transition: all 0.4s ease;
+            text-align: left; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .terminal-header {
             background: #1a1b26; padding: 8px 15px; display: flex; gap: 6px;
@@ -107,7 +102,6 @@
             font-size: 0.9rem; flex: 1; outline: none; cursor: none;
         }
 
-        /* CAM UI */
         .cam-container {
             position: fixed; bottom: 30px; left: 30px; z-index: 101;
             display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
@@ -158,7 +152,6 @@
         .cursor-blink { animation: blink 1s step-end infinite; border-right: 2px solid var(--accent-blue); }
         @keyframes blink { 50% { border-color: transparent; } }
 
-        /* CARDS */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; width: 100%; max-width: 1100px; }
         .card {
             background: rgba(10, 15, 25, 0.7); border: 1px solid rgba(255,255,255,0.1);
@@ -181,7 +174,6 @@
         .card p { color: #ccc; line-height: 1.6; font-size: 0.9rem; margin-bottom: 15px; }
         .card-tech { font-size: 0.75rem; color: #888; font-family: monospace; }
 
-        /* BUTTONS */
         .contact-container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
         .btn-main {
             display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -197,7 +189,6 @@
         }
         .btn-cv:hover { background: white; color: black; transform: translateY(-2px); box-shadow: 0 0 30px white; }
 
-        /* STATUS */
         #status-indicator {
             position: fixed; bottom: 30px; right: 30px; z-index: 100;
             font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
@@ -207,7 +198,7 @@
         }
         .dot { width: 6px; height: 6px; background: #333; border-radius: 50%; transition: 0.3s; }
         .active-hand .dot { background: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue); }
-        .active-fist .dot { background: var(--accent-purple); box-shadow: 0 0 15px var(--accent-purple); }
+        .active-fist .dot { background: var(--accent-apple); box-shadow: 0 0 15px var(--accent-apple); }
 
         #input-video { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; z-index: -100; }
         
@@ -230,8 +221,6 @@
         }
         .cam-container:hover .privacy-tooltip { opacity: 1; visibility: visible; transform: translateY(0); }
         .privacy-tooltip.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        @media (max-width: 600px) { .privacy-tooltip { width: 220px; left: 0; } }
-
     </style>
 </head>
 <body>
@@ -389,7 +378,7 @@
         const positions = new Float32Array(particleCount * 3);
         const originalPos = new Float32Array(particleCount * 3);
         const randomOffsets = new Float32Array(particleCount * 3);
-        const sphereCoords = new Float32Array(particleCount * 3); 
+        const appleCoords = new Float32Array(particleCount * 3); 
         
         let isTextMode = false;
         let isMatrixMode = false;
@@ -401,6 +390,7 @@
 
         for(let i=0; i<particleCount; i++) {
             const i3 = i * 3;
+            // צורת גלקסיה מקורית
             const r = Math.random() * spread;
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos((Math.random() * 2) - 1);
@@ -417,13 +407,18 @@
             randomOffsets[i3+1] = cloudR * Math.sin(phi) * Math.sin(theta);
             randomOffsets[i3+2] = cloudR * Math.cos(phi);
 
-            const phiSphere = Math.acos(1 - 2 * (i + 0.5) / particleCount);
-            const thetaSphere = Math.PI * (1 + Math.sqrt(5)) * i;
-            const sphereR = 250; 
+            // --- צורת תפוח (Apple Shape) ---
+            const phiA = Math.acos(1 - 2 * (i + 0.5) / particleCount); // 0 עד PI
+            const thetaA = Math.PI * (1 + Math.sqrt(5)) * i;
+            const R = 320;
             
-            sphereCoords[i3] = sphereR * Math.sin(phiSphere) * Math.cos(thetaSphere);
-            sphereCoords[i3+1] = sphereR * Math.sin(phiSphere) * Math.sin(thetaSphere);
-            sphereCoords[i3+2] = sphereR * Math.cos(phiSphere);
+            // יצירת השקע למעלה ולמטה (נוסחה מתמטית לתפוח)
+            const dimple = 1 - 0.3 * Math.pow(Math.sin(phiA), 2);
+            const rApple = R * dimple;
+            
+            appleCoords[i3] = rApple * Math.sin(phiA) * Math.cos(thetaA);
+            appleCoords[i3+1] = rApple * Math.cos(phiA); // ציר ה-Y
+            appleCoords[i3+2] = rApple * Math.sin(phiA) * Math.sin(thetaA);
         }
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -447,7 +442,7 @@
         const starSystem = new THREE.Points(geometry, material);
         scene.add(starSystem);
 
-        // --- פונקציה להמרת הטקסט ליעדי חלקיקים ---
+        // --- יצירת הטקסט למרחב 3D ---
         function triggerTextEffect(text) {
             const tempCanvas = document.createElement('canvas');
             const ctx = tempCanvas.getContext('2d');
@@ -457,7 +452,7 @@
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             
-            ctx.font = 'bold 150px Montserrat';
+            ctx.font = 'bold 200px Montserrat'; // הגדלתי את הפונט
             ctx.fillStyle = 'white';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -471,9 +466,9 @@
                     const index = (y * tempCanvas.width + x) * 4;
                     if (imageData[index] > 128) { 
                         points.push({
-                            x: (x - tempCanvas.width / 2) * 2.5,
-                            y: -(y - tempCanvas.height / 2) * 2.5,
-                            z: (Math.random() - 0.5) * 100
+                            x: (x - tempCanvas.width / 2) * 1.5,
+                            y: -(y - tempCanvas.height / 2) * 1.5,
+                            z: (Math.random() - 0.5) * 50 // מיקום Z שטוח וברור
                         });
                     }
                 }
@@ -495,32 +490,39 @@
             isTextMode = true;
             clearTimeout(textTimeout);
             
-            // השהיה ואז חזרה למצב רגיל
             textTimeout = setTimeout(() => {
                 isTextMode = false;
-            }, 5000);
+            }, 6000);
         }
 
-        // --- 2. TERMINAL LOGIC ---
+        // --- 2. TERMINAL LOGIC WITH EMBEDDED COMMANDS ---
         const terminalBody = document.getElementById('terminal-body');
         const inputLine = document.getElementById('input-line');
         const cmdInput = document.getElementById('cmd-input');
         const termContainer = document.getElementById('term-container');
         
-        let availableCommands = {};
-
-        fetch('commands.json')
-            .then(response => response.json())
-            .then(data => { availableCommands = data; })
-            .catch(error => { console.error("Could not load commands.json", error); });
+        // כל הפקודות עכשיו יושבות בתוך הקוד, אין בעיות CORS לעולם!
+        const availableCommands = {
+            "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat\n[DEVOPS]      docker, k8s, aws, git\n[SYSTEM]      whoami, date, uptime, top\n[PERSONAL]    about, skills, contact, cv\n[FUN]         render <text>, matrix, clear\n\nType a command to execute.", "type": "info" },
+            "ls": { "response": "about.txt   skills.md   contact.info   projects/   cv.pdf", "type": "success" },
+            "pwd": { "response": "/home/gadi/portfolio", "type": "success" },
+            "about": { "response": "I am Gadi Rapaport. DevOps Engineer | Python Developer | AI Enthusiast.", "type": "success" },
+            "skills": { "response": "[+] Python, Java, Bash\n[+] Docker, Kubernetes\n[+] CI/CD, AWS\n[+] Linux Administration", "type": "success" },
+            "cv": { "response": "Downloading CV...", "type": "success", "action": "link:https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo" },
+            "docker": { "response": "Docker is running.", "type": "success" },
+            "docker ps": { "response": "CONTAINER ID   IMAGE        STATUS\n8f3a2b1c4d     portfolio    Up 24 hours", "type": "info" },
+            "k8s": { "response": "Kubernetes cluster is healthy.", "type": "success" },
+            "whoami": { "response": "root", "type": "success" },
+            "date": { "response": new Date().toString(), "type": "info" },
+            "clear": { "response": "Clearing...", "type": "info", "action": "clear" }
+        };
 
         const bootSequence = [
             { text: "gadi@root:~$ initializing_kernel...", class: "cmd-line" },
             { text: "> Loading configuration... [OK]", class: "cmd-line success", delay: 300 },
-            { text: "> Connecting to neural interface... [OK]", class: "cmd-line success", delay: 600 },
-            { text: "> Starting interactive shell...", class: "cmd-line info", delay: 900 },
-            { text: 'Type "render <word>" to build 3D text.', class: "cmd-line warn", delay: 1200 },
-            { text: 'Type "matrix" for a surprise.', class: "cmd-line matrix-text", delay: 1500 }
+            { text: "> Starting interactive shell...", class: "cmd-line info", delay: 700 },
+            { text: 'Type "render <word>" to build 3D text.', class: "cmd-line warn", delay: 1000 },
+            { text: 'Type "matrix" for a surprise.', class: "cmd-line matrix-text", delay: 1300 }
         ];
 
         function runBoot() {
@@ -562,29 +564,26 @@
                     setTimeout(()=> this.focus(), 10); 
                     return;
                 } 
-                // --- פקודת רנדר (עם העלמת הטרמינל) ---
                 else if (cmd.startsWith('render ')) {
                     const word = rawCmd.substring(7).trim();
                     if(word.length > 0) {
                         triggerTextEffect(word);
-                        responseText = `Rendering particle text: ${word}...`;
+                        responseText = `Rendering text: ${word}...`;
                         respClass = 'success';
                         
-                        // העלמת הטרמינל
-                        gsap.to(termContainer, { opacity: 0, scale: 0.9, duration: 0.5, pointerEvents: "none" });
+                        // העלמת הטרמינל כדי לראות את האפקט
+                        gsap.to(termContainer, { opacity: 0, y: 100, scale: 0.8, duration: 0.8, pointerEvents: "none", ease: "power3.in" });
                         
-                        // חזרת הטרמינל אחרי שהאפקט נגמר
                         setTimeout(() => {
-                            gsap.to(termContainer, { opacity: 1, scale: 1, duration: 0.5, pointerEvents: "auto" });
+                            gsap.to(termContainer, { opacity: 1, y: 0, scale: 1, duration: 0.8, pointerEvents: "auto", ease: "power3.out" });
                             cmdInput.focus();
-                        }, 5500);
+                        }, 6000);
 
                     } else {
                         responseText = 'Usage: render <text>';
                         respClass = 'error';
                     }
                 }
-                // --- פקודת מטריקס המיוחדת ---
                 else if (cmd === 'matrix') {
                     isMatrixMode = !isMatrixMode;
                     if(isMatrixMode) {
@@ -598,9 +597,7 @@
                     }
                 }
                 else if (availableCommands[cmd]) {
-                    let resp = availableCommands[cmd].response;
-                    if (resp === "CURRENT_TIMESTAMP") { resp = new Date().toString(); }
-                    responseText = resp;
+                    responseText = availableCommands[cmd].response;
                     respClass = availableCommands[cmd].type || 'info';
                     action = availableCommands[cmd].action;
                 } 
@@ -625,11 +622,9 @@
             }
         });
 
-        // --- 3. TYPEWRITER ---
         gsap.registerPlugin(TextPlugin);
         gsap.to("#typewriter", { duration: 3, text: "Don't Just Write Code. Rewrite the Laws.", ease: "none", delay: 1 });
 
-        // GSAP Animations
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
         gsap.to(camera.position, { z: -1500, ease: "none", scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }});
         gsap.to(starSystem.rotation, { z: Math.PI / 2, ease: "none", scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 2 }});
@@ -667,12 +662,7 @@
 
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
         
-        hands.setOptions({ 
-            maxNumHands: 1, 
-            modelComplexity: 1, 
-            minDetectionConfidence: 0.5, 
-            minTrackingConfidence: 0.5 
-        });
+        hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
 
         hands.onResults(results => {
             if(!isCameraRunning) return;
@@ -694,7 +684,7 @@
                 const distance = Math.sqrt(Math.pow(wrist.x - middleTip.x, 2) + Math.pow(wrist.y - middleTip.y, 2));
 
                 if (distance < 0.25) { 
-                    isFist = true; statusInd.className = 'active-fist'; statusTxt.innerText = "CYBER SPHERE ACTIVE";
+                    isFist = true; statusInd.className = 'active-fist'; statusTxt.innerText = "APPLE ACTIVATED";
                 } else {
                     isFist = false; statusInd.className = 'active-hand'; statusTxt.innerText = "Hand Tracked";
                 }
@@ -721,7 +711,7 @@
 
         // --- לולאת האנימציה הראשית ---
         const colBase = new THREE.Color(0x00C2FF); 
-        const colSphere = new THREE.Color(0xBD00FF); 
+        const colApple = new THREE.Color(0xE63946); // Apple Red
         const colText = new THREE.Color(0x44FF88); 
         const colMatrix = new THREE.Color(0x00FF41);
 
@@ -732,10 +722,11 @@
             smoothedTarget.lerp(handTarget, 0.1); 
 
             if (isTextMode) {
-                // מצב טקסט (Render)
+                // יישור מיידי ומושלם של הטקסט מול המצלמה, למרות הגלילה!
                 material.color.lerp(colText, 0.1);
-                starSystem.rotation.y += (0 - starSystem.rotation.y) * 0.1; 
                 starSystem.rotation.x += (0 - starSystem.rotation.x) * 0.1;
+                starSystem.rotation.y += (0 - starSystem.rotation.y) * 0.1;
+                starSystem.rotation.z += (0 - starSystem.rotation.z) * 0.1; 
                 
                 for(let i=0; i<particleCount; i++) {
                     const i3 = i*3;
@@ -745,26 +736,19 @@
                 }
             } 
             else if (isMatrixMode) {
-                // מצב מטריקס
                 material.color.lerp(colMatrix, 0.1);
-                starSystem.rotation.y = 0;
-                starSystem.rotation.x = 0;
+                starSystem.rotation.y = 0; starSystem.rotation.x = 0; starSystem.rotation.z = 0;
                 
                 for(let i=0; i<particleCount; i++) {
                     const i3 = i*3;
-                    // החלקיקים נופלים למטה
                     pos[i3+1] -= (10 + Math.random() * 20);
-                    // כשהם יוצאים מהמסך, חוזרים למעלה
                     if (pos[i3+1] < -3000) {
-                        pos[i3+1] = 3000;
-                        pos[i3] = originalPos[i3];
-                        pos[i3+2] = originalPos[i3+2];
+                        pos[i3+1] = 3000; pos[i3] = originalPos[i3]; pos[i3+2] = originalPos[i3+2];
                     }
                 }
             }
             else if(isHandDetected && isCameraRunning) {
-                // מצב זיהוי תנועה רגיל
-                material.color.lerp(isFist ? colSphere : colBase, 0.1);
+                material.color.lerp(isFist ? colApple : colBase, 0.1);
                 
                 for(let i=0; i<particleCount; i++) {
                     const i3 = i*3;
@@ -775,9 +759,9 @@
                         const cosT = Math.cos(time);
                         const sinT = Math.sin(time);
                         
-                        const sx = sphereCoords[i3];
-                        const sy = sphereCoords[i3+1];
-                        const sz = sphereCoords[i3+2];
+                        const sx = appleCoords[i3];
+                        const sy = appleCoords[i3+1];
+                        const sz = appleCoords[i3+2];
                         
                         const rx = sx * cosT - sz * sinT;
                         const rz = sx * sinT + sz * cosT;
@@ -801,7 +785,6 @@
                     }
                 }
             } else {
-                // חזרה למצב גלקסיה (IDLE)
                 material.color.lerp(colBase, 0.05);
                 for(let i=0; i<particleCount; i++) {
                     const i3 = i*3;
