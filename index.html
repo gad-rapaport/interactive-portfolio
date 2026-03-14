@@ -18,7 +18,7 @@
         :root {
             --bg-deep: #020617; 
             --accent-blue: #00C2FF; 
-            --accent-purple: #BD00FF; /* Cyber Sphere Color */
+            --accent-purple: #BD00FF;
             --accent-red: #D90429;
             --terminal-bg: rgba(15, 15, 20, 0.95);
         }
@@ -27,7 +27,6 @@
         html { scroll-behavior: smooth; }
 
         body { 
-            /* Deep Slate to Midnight Blue Gradient */
             background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
             color: white; font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
@@ -357,6 +356,137 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
+        // --- PARTICLE SYSTEM SETUP ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x020617, 0.0008);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 5000);
+        camera.position.set(0, 0, 1500); 
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        const particleCount = 14000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const originalPos = new Float32Array(particleCount * 3);
+        const randomOffsets = new Float32Array(particleCount * 3);
+        const sphereCoords = new Float32Array(particleCount * 3); 
+        
+        // משתנים חדשים עבור אפקט הטקסט
+        let isTextMode = false;
+        let textTimeout;
+        const textTargets = new Float32Array(particleCount * 3);
+        
+        const spread = 2000;
+        const depth = 6000;
+
+        for(let i=0; i<particleCount; i++) {
+            const i3 = i * 3;
+            const r = Math.random() * spread;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.sin(phi) * Math.sin(theta);
+            const z = (Math.random() - 0.5) * depth;
+
+            positions[i3] = x; positions[i3+1] = y; positions[i3+2] = z;
+            originalPos[i3] = x; originalPos[i3+1] = y; originalPos[i3+2] = z;
+            
+            const cloudR = 400 + Math.random() * 400;
+            randomOffsets[i3] = cloudR * Math.sin(phi) * Math.cos(theta);
+            randomOffsets[i3+1] = cloudR * Math.sin(phi) * Math.sin(theta);
+            randomOffsets[i3+2] = cloudR * Math.cos(phi);
+
+            const phiSphere = Math.acos(1 - 2 * (i + 0.5) / particleCount);
+            const thetaSphere = Math.PI * (1 + Math.sqrt(5)) * i;
+            const sphereR = 250; 
+            
+            sphereCoords[i3] = sphereR * Math.sin(phiSphere) * Math.cos(thetaSphere);
+            sphereCoords[i3+1] = sphereR * Math.sin(phiSphere) * Math.sin(thetaSphere);
+            sphereCoords[i3+2] = sphereR * Math.cos(phiSphere);
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const getTexture = () => {
+            const c = document.createElement('canvas'); c.width=32; c.height=32;
+            const ctx = c.getContext('2d');
+            const g = ctx.createRadialGradient(16,16,0,16,16,16);
+            g.addColorStop(0, 'rgba(255,255,255,1)');
+            g.addColorStop(0.5, 'rgba(255,255,255,0.1)');
+            g.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = g; ctx.fillRect(0,0,32,32);
+            const t = new THREE.Texture(c); t.needsUpdate = true; return t;
+        }
+
+        const material = new THREE.PointsMaterial({
+            size: 3.5, map: getTexture(), transparent: true, opacity: 0.8,
+            blending: THREE.AdditiveBlending, depthWrite: false, color: 0x00C2FF 
+        });
+
+        const starSystem = new THREE.Points(geometry, material);
+        scene.add(starSystem);
+
+        // --- פונקציה להמרת הטקסט ליעדי חלקיקים ---
+        function triggerTextEffect(text) {
+            const tempCanvas = document.createElement('canvas');
+            const ctx = tempCanvas.getContext('2d');
+            tempCanvas.width = window.innerWidth;
+            tempCanvas.height = window.innerHeight;
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            ctx.font = 'bold 150px Montserrat';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text.toUpperCase(), tempCanvas.width / 2, tempCanvas.height / 2);
+
+            const imageData = ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
+            const points = [];
+
+            for (let y = 0; y < tempCanvas.height; y += 4) {
+                for (let x = 0; x < tempCanvas.width; x += 4) {
+                    const index = (y * tempCanvas.width + x) * 4;
+                    if (imageData[index] > 128) { 
+                        points.push({
+                            x: (x - tempCanvas.width / 2) * 2.5,
+                            y: -(y - tempCanvas.height / 2) * 2.5,
+                            z: (Math.random() - 0.5) * 100
+                        });
+                    }
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                if (i < points.length) {
+                    textTargets[i3] = points[i].x;
+                    textTargets[i3 + 1] = points[i].y;
+                    textTargets[i3 + 2] = points[i].z;
+                } else {
+                    // שולח את שארית החלקיקים לרקע
+                    textTargets[i3] = originalPos[i3];
+                    textTargets[i3 + 1] = originalPos[i3 + 1];
+                    textTargets[i3 + 2] = originalPos[i3 + 2];
+                }
+            }
+            
+            isTextMode = true;
+            clearTimeout(textTimeout);
+            
+            // חזרה למצב הגלקסיה הרגיל אחרי 5 שניות
+            textTimeout = setTimeout(() => {
+                isTextMode = false;
+            }, 5000);
+        }
+
         // --- 2. TERMINAL LOGIC (Robust) ---
         const terminalBody = document.getElementById('terminal-body');
         const inputLine = document.getElementById('input-line');
@@ -364,19 +494,18 @@
         
         let availableCommands = {};
 
-        // Fetch commands
         fetch('commands.json')
             .then(response => response.json())
             .then(data => { availableCommands = data; })
             .catch(error => { console.error("Could not load commands.json", error); });
 
-        // Boot Animation
         const bootSequence = [
             { text: "gadi@root:~$ initializing_kernel...", class: "cmd-line" },
             { text: "> Loading configuration... [OK]", class: "cmd-line success", delay: 300 },
             { text: "> Connecting to neural interface... [OK]", class: "cmd-line success", delay: 600 },
             { text: "> Starting interactive shell...", class: "cmd-line info", delay: 900 },
-            { text: 'Type "help" to see available commands.', class: "cmd-line warn", delay: 1200 }
+            { text: 'New feature: type "render <your_word>" to control particles.', class: "cmd-line warn", delay: 1200 },
+            { text: 'Type "help" to see available commands.', class: "cmd-line warn", delay: 1500 }
         ];
 
         function runBoot() {
@@ -397,11 +526,10 @@
             }, delaySum + 200);
         }
 
-        // Terminal Input Handling
         cmdInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                const rawCmd = this.value.trim().toLowerCase();
-                const cmd = rawCmd; 
+                const rawCmd = this.value.trim();
+                const cmd = rawCmd.toLowerCase(); 
 
                 const historyLine = document.createElement('div');
                 historyLine.className = 'cmd-line';
@@ -419,8 +547,19 @@
                     setTimeout(()=> this.focus(), 10); 
                     return;
                 } 
-
-                if (availableCommands[cmd]) {
+                // תפיסת הפקודה החדשה render
+                else if (cmd.startsWith('render ')) {
+                    const word = rawCmd.substring(7).trim();
+                    if(word.length > 0) {
+                        triggerTextEffect(word);
+                        responseText = `Rendering particle text: ${word}...`;
+                        respClass = 'success';
+                    } else {
+                        responseText = 'Usage: render <text>';
+                        respClass = 'error';
+                    }
+                }
+                else if (availableCommands[cmd]) {
                     let resp = availableCommands[cmd].response;
                     if (resp === "CURRENT_TIMESTAMP") { resp = new Date().toString(); }
                     responseText = resp;
@@ -456,94 +595,6 @@
         gsap.registerPlugin(TextPlugin);
         gsap.to("#typewriter", { duration: 3, text: "Don't Just Write Code. Rewrite the Laws.", ease: "none", delay: 1 });
 
-        // --- 4. THREE.JS & HAND TRACKING ---
-        let isCameraRunning = false;
-        let isHandDetected = false;
-        let isFist = false;
-        let isModelLoaded = false;
-        
-        const toggleBtn = document.getElementById('cam-toggle');
-        const btnText = document.querySelector('.btn-text');
-        const spinner = document.getElementById('loading-spinner');
-        const camHint = document.getElementById('cam-hint');
-        const statusInd = document.getElementById('status-indicator');
-        const statusTxt = document.getElementById('status-text');
-        
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x020617, 0.0008);
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 5000);
-        camera.position.set(0, 0, 1500); 
-        camera.lookAt(0, 0, 0);
-
-        const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.body.appendChild(renderer.domElement);
-
-        // PARTICLES (14,000 Points)
-        const particleCount = 14000;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const originalPos = new Float32Array(particleCount * 3);
-        const randomOffsets = new Float32Array(particleCount * 3);
-        const sphereCoords = new Float32Array(particleCount * 3); // For Fist Effect
-        
-        const spread = 2000;
-        const depth = 6000;
-
-        for(let i=0; i<particleCount; i++) {
-            const i3 = i * 3;
-            // 1. Galaxy Form (Chaos)
-            const r = Math.random() * spread;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            
-            const x = r * Math.sin(phi) * Math.cos(theta);
-            const y = r * Math.sin(phi) * Math.sin(theta);
-            const z = (Math.random() - 0.5) * depth;
-
-            positions[i3] = x; positions[i3+1] = y; positions[i3+2] = z;
-            originalPos[i3] = x; originalPos[i3+1] = y; originalPos[i3+2] = z;
-            
-            // Random floating offsets
-            const cloudR = 400 + Math.random() * 400;
-            randomOffsets[i3] = cloudR * Math.sin(phi) * Math.cos(theta);
-            randomOffsets[i3+1] = cloudR * Math.sin(phi) * Math.sin(theta);
-            randomOffsets[i3+2] = cloudR * Math.cos(phi);
-
-            // 2. Sphere Form (Order - Fibonacci Sphere)
-            const phiSphere = Math.acos(1 - 2 * (i + 0.5) / particleCount);
-            const thetaSphere = Math.PI * (1 + Math.sqrt(5)) * i;
-            const sphereR = 250; // Radius of the fist ball
-            
-            sphereCoords[i3] = sphereR * Math.sin(phiSphere) * Math.cos(thetaSphere);
-            sphereCoords[i3+1] = sphereR * Math.sin(phiSphere) * Math.sin(thetaSphere);
-            sphereCoords[i3+2] = sphereR * Math.cos(phiSphere);
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-        // Texture
-        const getTexture = () => {
-            const c = document.createElement('canvas'); c.width=32; c.height=32;
-            const ctx = c.getContext('2d');
-            const g = ctx.createRadialGradient(16,16,0,16,16,16);
-            g.addColorStop(0, 'rgba(255,255,255,1)');
-            g.addColorStop(0.5, 'rgba(255,255,255,0.1)');
-            g.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = g; ctx.fillRect(0,0,32,32);
-            const t = new THREE.Texture(c); t.needsUpdate = true; return t;
-        }
-
-        const material = new THREE.PointsMaterial({
-            size: 3.5, map: getTexture(), transparent: true, opacity: 0.8,
-            blending: THREE.AdditiveBlending, depthWrite: false, color: 0x00C2FF 
-        });
-
-        const starSystem = new THREE.Points(geometry, material);
-        scene.add(starSystem);
-
         // GSAP Animations
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
         gsap.to(camera.position, { z: -1500, ease: "none", scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }});
@@ -551,10 +602,7 @@
 
         gsap.from("#home h1", { opacity: 0, y: 50, duration: 2, delay: 0.5, ease: "power3.out" });
         gsap.from(".hero-logo-img", { opacity: 0, scale: 0.8, duration: 1.5, delay: 0.2, ease: "back.out(1.7)" });
-
-        // Trigger Terminal Animation
         gsap.to(".terminal-window", { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: runBoot });
-
         gsap.to(".card", { scrollTrigger: { trigger: "#projects", start: "top 70%" }, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" });
         gsap.to(".contact-container", { scrollTrigger: { trigger: "#contact", start: "top 80%" }, opacity: 1, y: 0, duration: 1, ease: "back.out(1.7)" });
 
@@ -567,7 +615,19 @@
             });
         });
 
-        // --- HAND TRACKING ---
+        // --- 4. HAND TRACKING ---
+        let isCameraRunning = false;
+        let isHandDetected = false;
+        let isFist = false;
+        let isModelLoaded = false;
+        
+        const toggleBtn = document.getElementById('cam-toggle');
+        const btnText = document.querySelector('.btn-text');
+        const spinner = document.getElementById('loading-spinner');
+        const camHint = document.getElementById('cam-hint');
+        const statusInd = document.getElementById('status-indicator');
+        const statusTxt = document.getElementById('status-text');
+        
         let handTarget = new THREE.Vector3(0,0,0);
         let smoothedTarget = new THREE.Vector3(0,0,0); 
 
@@ -625,9 +685,10 @@
             }
         });
 
-        // LOOP
+        // --- לולאת האנימציה הראשית ---
         const colBase = new THREE.Color(0x00C2FF); 
-        const colSphere = new THREE.Color(0xBD00FF); // Purple
+        const colSphere = new THREE.Color(0xBD00FF); 
+        const colText = new THREE.Color(0x44FF88); // צבע ירוק לאפקט הטקסט
 
         function animate() {
             requestAnimationFrame(animate);
@@ -635,31 +696,35 @@
 
             smoothedTarget.lerp(handTarget, 0.1); 
 
-            if(isHandDetected && isCameraRunning) {
+            if (isTextMode) {
+                // מצב טקסט
+                material.color.lerp(colText, 0.1);
+                starSystem.rotation.y += (0 - starSystem.rotation.y) * 0.1; // יישור מצלמה מול הטקסט
+                starSystem.rotation.x += (0 - starSystem.rotation.x) * 0.1;
+                
+                for(let i=0; i<particleCount; i++) {
+                    const i3 = i*3;
+                    pos[i3] += (textTargets[i3] - pos[i3]) * 0.08;
+                    pos[i3+1] += (textTargets[i3+1] - pos[i3+1]) * 0.08;
+                    pos[i3+2] += (textTargets[i3+2] - pos[i3+2]) * 0.08;
+                }
+            } 
+            else if(isHandDetected && isCameraRunning) {
                 material.color.lerp(isFist ? colSphere : colBase, 0.1);
-            } else {
-                material.color.lerp(colBase, 0.1);
-            }
-
-            for(let i=0; i<particleCount; i++) {
-                const i3 = i*3;
-
-                if(isHandDetected && isCameraRunning) {
+                
+                for(let i=0; i<particleCount; i++) {
+                    const i3 = i*3;
                     let tx, ty, tz;
 
                     if(isFist) {
-                        // --- FIST: CYBER SPHERE (ORDER) ---
-                        // Rotate sphere points
                         const time = Date.now() * 0.002;
                         const cosT = Math.cos(time);
                         const sinT = Math.sin(time);
                         
-                        // Base sphere coord
                         const sx = sphereCoords[i3];
                         const sy = sphereCoords[i3+1];
                         const sz = sphereCoords[i3+2];
                         
-                        // Rotation logic
                         const rx = sx * cosT - sz * sinT;
                         const rz = sx * sinT + sz * cosT;
                         
@@ -667,13 +732,11 @@
                         ty = smoothedTarget.y + sy;
                         tz = smoothedTarget.z + rz;
 
-                        // Lerp to sphere
                         pos[i3] += (tx - pos[i3]) * 0.1;
                         pos[i3+1] += (ty - pos[i3+1]) * 0.1;
                         pos[i3+2] += (tz - pos[i3+2]) * 0.1;
 
                     } else {
-                        // --- OPEN HAND: FLOW (CHAOS) ---
                         tx = smoothedTarget.x + randomOffsets[i3];
                         ty = smoothedTarget.y + randomOffsets[i3+1];
                         tz = smoothedTarget.z + randomOffsets[i3+2];
@@ -682,15 +745,19 @@
                         pos[i3+1] += (ty - pos[i3+1]) * 0.05; 
                         pos[i3+2] += (tz - pos[i3+2]) * 0.05;
                     }
-                } else {
-                    // IDLE
+                }
+            } else {
+                // חזרה למצב גלקסיה (IDLE)
+                material.color.lerp(colBase, 0.05);
+                for(let i=0; i<particleCount; i++) {
+                    const i3 = i*3;
                     const ox = originalPos[i3]; const oy = originalPos[i3+1]; const oz = originalPos[i3+2];
                     pos[i3] += (ox - pos[i3]) * 0.02; pos[i3+1] += (oy - pos[i3+1]) * 0.02; pos[i3+2] += (oz - pos[i3+2]) * 0.02;
                 }
+                starSystem.rotation.y += 0.0003;
             }
 
             geometry.attributes.position.needsUpdate = true;
-            if(!isFist) starSystem.rotation.y += 0.0003;
             renderer.render(scene, camera);
         }
         animate();
