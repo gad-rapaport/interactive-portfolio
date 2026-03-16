@@ -275,7 +275,12 @@
                 <div class="term-dot red"></div>
                 <div class="term-dot yellow"></div>
                 <div class="term-dot green"></div>
-                <span style="font-size:10px; color:#666; margin-left:10px;">gadi@root:~</span>
+                
+                <div style="display: flex; align-items: center; gap: 10px; margin-left: 10px;">
+                    <span style="font-size:10px; color:#666;">gadi@root:~</span>
+                    <img src="https://visitor-badge.laobi.icu/badge?page_id=gadi-rapaport.portfolio" alt="visitors" style="height: 15px; opacity: 0.8;">
+                </div>
+
             </div>
             <div class="terminal-body" id="terminal-body">
                 <div class="input-line" id="input-line" style="display:none;">
@@ -495,8 +500,6 @@
         
         const availableCommands = {
             "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat, tree\n[DEVOPS]      docker, k8s, aws, git, terraform\n[SYSTEM]      whoami, date, uptime, top, ping\n[PERSONAL]    about, skills, contact, cv, github, linkedin\n[FUN]         render <text>, matrix, clear, sudo, coffee, joke\n\nType a command to execute.", "type": "info" },
-            
-            // Navigation
             "ls": { "response": "about.txt   skills.md   contact.info   projects/   cv.pdf", "type": "success" },
             "ls -la": { "response": "drwxr-xr-x 2 gadi root 4096 Mar 15 12:00 .\n-rw-r--r-- 1 gadi root  512 Mar 15 12:00 about.txt\n-rw-r--r-- 1 gadi root 1024 Mar 15 12:00 skills.md\n-rw-r--r-- 1 gadi root  128 Mar 15 12:00 contact.info\ndrwxr-xr-x 3 gadi root 4096 Mar 15 12:00 projects\n-rwxr-xr-x 1 gadi root 8192 Mar 15 12:00 cv.pdf", "type": "success" },
             "pwd": { "response": "/home/gadi/portfolio", "type": "success" },
@@ -504,31 +507,23 @@
             "cd ..": { "response": "Access Denied: Restricted shell environment.", "type": "error" },
             "cd ~": { "response": "/home/gadi", "type": "info" },
             "tree": { "response": ".\n├── about.txt\n├── skills.md\n├── contact.info\n├── cv.pdf\n└── projects\n    ├── bybis_app\n    └── haredi_community", "type": "success" },
-            
-            // Files
             "cat": { "response": "usage: cat <filename>", "type": "info" },
             "cat about.txt": { "response": "NAME: Gadi Rapaport\nROLE: DevOps Engineer\nFOCUS: Automation, Cloud, AI integration.", "type": "success" },
             "cat skills.md": { "response": "# Technical Skills\n* Python / Java / Bash\n* Docker / K8s / Helm\n* AWS / Azure\n* Jenkins / GitHub Actions", "type": "success" },
             "cat contact.info": { "response": "Email: dshrppury@gmail.com\nPhone: 055-929-7328\nLocation: Bnei Brak, Israel", "type": "success" },
-            
-            // Personal
             "about": { "response": "I am Gadi Rapaport. DevOps Engineer | Python Developer | AI Enthusiast.", "type": "success" },
             "skills": { "response": "[+] Python, Java, Bash\n[+] Docker, Kubernetes\n[+] CI/CD, AWS\n[+] Linux Administration", "type": "success" },
             "contact": { "response": "Email: dshrppury@gmail.com | Phone: 055-929-7328 | Bnei Brak", "type": "success" },
             "cv": { "response": "Downloading CV...", "type": "success", "action": "link:https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo" },
             "github": { "response": "Opening GitHub...", "type": "success", "action": "link:https://github.com/gad-rapaport" },
             "linkedin": { "response": "Opening LinkedIn...", "type": "success", "action": "link:https://www.linkedin.com/in/gad-rapaport-a12988345" },
-            
-            // System & Network
             "whoami": { "response": "root", "type": "success" },
             "date": { "response": new Date().toString(), "type": "info" },
             "uptime": { "response": " 13:37:00 up 42 days, 1 user, load average: 0.00, 0.01, 0.05", "type": "info" },
             "top": { "response": "PID USER      PR  NI  VIRT  RES  %CPU %MEM  COMMAND\n  1 root      20   0  112m  14m   0.0  0.1  systemd\n  7 gadi      20   0 14.2g 1.1g   2.3 12.0  java", "type": "info" },
             "ping": { "response": "usage: ping <destination>", "type": "info" },
             "ping google.com": { "response": "64 bytes from 142.250.185.78: icmp_seq=1 ttl=117 time=14.2 ms\n64 bytes from 142.250.185.78: icmp_seq=2 ttl=117 time=15.1 ms", "type": "success" },
-            "curl": { "response": "curl: try 'curl --help' or 'curl --manual' for more information", "type": "info" },
-            
-            // DevOps
+            "curl": { "response": "curl: try 'curl --help' for more information", "type": "info" },
             "docker": { "response": "Docker version 24.0.5, build ced0996", "type": "success" },
             "docker ps": { "response": "CONTAINER ID   IMAGE        STATUS\n8f3a2b1c4d     portfolio    Up 24 hours\n7e2d1c5b9a     database     Up 24 hours", "type": "info" },
             "k8s": { "response": "Kubernetes cluster is healthy.", "type": "success" },
@@ -537,8 +532,6 @@
             "git": { "response": "usage: git [--version] [--help] [-C <path>] <command> [<args>]", "type": "info" },
             "git status": { "response": "On branch main\nYour branch is up to date with 'origin/main'.\n\nnothing to commit, working tree clean", "type": "success" },
             "terraform": { "response": "Terraform v1.5.7\non linux_amd64", "type": "info" },
-            
-            // Fun
             "clear": { "response": "Clearing...", "type": "info", "action": "clear" },
             "sudo": { "response": "gadi is not in the sudoers file. This incident will be reported.", "type": "error" },
             "sudo rm -rf /": { "response": "Nice try. I'm afraid I can't do that.", "type": "error" },
@@ -554,6 +547,32 @@
             { text: 'Type "render <word>" to build 3D text.', class: "cmd-line warn", delay: 1000 },
             { text: 'Type "matrix" for a surprise.', class: "cmd-line matrix-text", delay: 1300 }
         ];
+
+        // --- IP GATHERING LOGIC ---
+        function fetchIPAndBoot() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const visitorIP = data.ip;
+                    
+                    // הדפסת ה-IP בטרמינל לאפקט סייבר
+                    bootSequence.splice(1, 0, { text: `[SYSTEM] Connection logged. Visitor IP: ${visitorIP}`, class: "cmd-line warn", delay: 500 });
+                    
+                    // מקום לשליחת הנתונים ל-Webhook (הסר את ה-/* */ כשתרצה להפעיל)
+                    /*
+                    const webhookUrl = 'YOUR_WEBHOOK_URL_HERE'; // שים פה את כתובת ה-Make/Discord שלך
+                    fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ip: visitorIP, timestamp: new Date().toISOString() })
+                    });
+                    */
+                    runBoot();
+                })
+                .catch(() => {
+                    runBoot(); // מפעיל בכל מקרה גם אם חסימת רשת מונעת משיכת IP
+                });
+        }
 
         function runBoot() {
             let delaySum = 0;
@@ -660,7 +679,10 @@
 
         gsap.from("#home h1", { opacity: 0, y: 50, duration: 2, delay: 0.5, ease: "power3.out" });
         gsap.from(".hero-logo-img", { opacity: 0, scale: 0.8, duration: 1.5, delay: 0.2, ease: "back.out(1.7)" });
-        gsap.to(termContainer, { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: runBoot });
+        
+        // כאן שינינו את האנימציה שתופעל רק אחרי הבאת ה-IP
+        gsap.to(termContainer, { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: fetchIPAndBoot });
+        
         gsap.to(".card", { scrollTrigger: { trigger: "#projects", start: "top 70%" }, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" });
         gsap.to(".contact-container", { scrollTrigger: { trigger: "#contact", start: "top 80%" }, opacity: 1, y: 0, duration: 1, ease: "back.out(1.7)" });
 
