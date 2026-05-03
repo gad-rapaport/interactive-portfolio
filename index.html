@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gadi Rapaport | DevOps & AI Portfolio</title>
+    <title>Gadi Rapaport | Mobile & Systems Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
@@ -230,7 +230,7 @@
     <nav>
         <img src="logo.png" alt="Logo" class="nav-logo-img">
         <a href="#home" class="nav-item active">Home</a>
-        <a href="#projects" class="nav-item">Projects</a>
+        <a href="#skills" class="nav-item">Skills</a>
         <a href="#contact" class="nav-item">Contact</a>
     </nav>
 
@@ -262,7 +262,7 @@
         </div>
         
         <h1 style="font-size: 2rem; margin-bottom: 0; opacity: 0.6; font-weight: 400;">GAD RAPAPORT</h1>
-        <h1>DevOps &<br><span>AI Innovation</span></h1>
+        <h1>Student &<br><span>Mobile Developer</span></h1>
         
         <p class="subtitle"><span id="typewriter"></span><span class="cursor-blink">&nbsp;</span></p>
         
@@ -291,32 +291,38 @@
         </div>
     </section>
 
-    <section id="projects">
-        <h1>Recent Work</h1>
+    <section id="skills">
+        <h1>Technical Expertise</h1>
         <div class="grid interactive">
             <div class="card">
-                <h3>ByBis App</h3>
-                <h4>Android & Java</h4>
-                <p>A comprehensive babysitting service platform. Features real-time chat, parent/sitter dashboards, and location services.</p>
-                <span class="card-tech">Stack: Android SDK, Firebase, Java</span>
+                <h3>Mobile Applications</h3>
+                <h4>Android Studio</h4>
+                <p>Developing native Android applications with a strong focus on clean architecture, dynamic UI, and innovative solutions.</p>
+                <span class="card-tech">Stack: Android Studio, Mobile SDKs</span>
             </div>
             <div class="card">
-                <h3>AI Shakespeare</h3>
-                <h4>Python & PyTorch</h4>
-                <p>Custom trained LLM on Shakespearean texts. Built from scratch to understand NLP architecture and transformer models.</p>
-                <span class="card-tech">Stack: Python, PyTorch, CUDA</span>
+                <h3>Python Development</h3>
+                <h4>Automation & Logic</h4>
+                <p>Creating efficient scripts, web scraping tools, and powerful backend logic for seamless digital operations.</p>
+                <span class="card-tech">Stack: Python, APIs, Automation</span>
             </div>
             <div class="card">
-                <h3>Haredi Community App</h3>
-                <h4>Supabase & Mobile</h4>
-                <p>Full-stack mobile solution integrating community news, prayer times, and service requests with a robust backend.</p>
-                <span class="card-tech">Stack: Supabase, SQL, API Integration</span>
+                <h3>Docker Containers</h3>
+                <h4>Deployment & Ecosystem</h4>
+                <p>Packaging code and Telegram bots into lightweight, portable, and reliable containerized environments.</p>
+                <span class="card-tech">Stack: Docker, Containers</span>
             </div>
             <div class="card">
-                <h3>Interactive Galaxy</h3>
-                <h4>Three.js & WebGL</h4>
-                <p>You are looking at it. A hand-gesture controlled particle system running in the browser using MediaPipe AI.</p>
-                <span class="card-tech">Stack: JavaScript, Three.js, MediaPipe</span>
+                <h3>Server Management</h3>
+                <h4>Linux & Cloud</h4>
+                <p>Setting up, maintaining, and troubleshooting server infrastructure to ensure high performance and availability.</p>
+                <span class="card-tech">Stack: Ubuntu, Cloud Hosting, Servers</span>
+            </div>
+            <div class="card">
+                <h3>Website Building</h3>
+                <h4>Web Development</h4>
+                <p>Designing responsive, interactive, and modern websites tailored to provide excellent user experiences.</p>
+                <span class="card-tech">Stack: HTML, CSS, JavaScript</span>
             </div>
         </div>
     </section>
@@ -499,20 +505,20 @@
         const termContainer = document.getElementById('term-container');
         
         const availableCommands = {
-            "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat, tree\n[DEVOPS]      docker, k8s, aws, git, terraform\n[SYSTEM]      whoami, date, uptime, top, ping\n[PERSONAL]    about, skills, contact, cv, github, linkedin\n[FUN]         render <text>, matrix, clear, sudo, coffee, joke\n\nType a command to execute.", "type": "info" },
-            "ls": { "response": "about.txt   skills.md   contact.info   projects/   cv.pdf", "type": "success" },
-            "ls -la": { "response": "drwxr-xr-x 2 gadi root 4096 Mar 15 12:00 .\n-rw-r--r-- 1 gadi root  512 Mar 15 12:00 about.txt\n-rw-r--r-- 1 gadi root 1024 Mar 15 12:00 skills.md\n-rw-r--r-- 1 gadi root  128 Mar 15 12:00 contact.info\ndrwxr-xr-x 3 gadi root 4096 Mar 15 12:00 projects\n-rwxr-xr-x 1 gadi root 8192 Mar 15 12:00 cv.pdf", "type": "success" },
+            "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat, tree\n[SKILLS]      docker, k8s, python, mobile, git\n[SYSTEM]      whoami, date, uptime, top, ping\n[PERSONAL]    about, contact, cv, github, linkedin\n[FUN]         render <text>, matrix, clear, sudo, coffee, joke\n\nType a command to execute.", "type": "info" },
+            "ls": { "response": "about.txt   skills.md   contact.info   cv.pdf", "type": "success" },
+            "ls -la": { "response": "drwxr-xr-x 2 gadi root 4096 Mar 15 12:00 .\n-rw-r--r-- 1 gadi root  512 Mar 15 12:00 about.txt\n-rw-r--r-- 1 gadi root 1024 Mar 15 12:00 skills.md\n-rw-r--r-- 1 gadi root  128 Mar 15 12:00 contact.info\n-rwxr-xr-x 1 gadi root 8192 Mar 15 12:00 cv.pdf", "type": "success" },
             "pwd": { "response": "/home/gadi/portfolio", "type": "success" },
             "cd": { "response": "Returned to /home/gadi", "type": "info" },
             "cd ..": { "response": "Access Denied: Restricted shell environment.", "type": "error" },
             "cd ~": { "response": "/home/gadi", "type": "info" },
-            "tree": { "response": ".\n├── about.txt\n├── skills.md\n├── contact.info\n├── cv.pdf\n└── projects\n    ├── bybis_app\n    └── haredi_community", "type": "success" },
+            "tree": { "response": ".\n├── about.txt\n├── skills.md\n├── contact.info\n└── cv.pdf", "type": "success" },
             "cat": { "response": "usage: cat <filename>", "type": "info" },
-            "cat about.txt": { "response": "NAME: Gadi Rapaport\nROLE: DevOps Engineer\nFOCUS: Automation, Cloud, AI integration.", "type": "success" },
-            "cat skills.md": { "response": "# Technical Skills\n* Python / Java / Bash\n* Docker / K8s / Helm\n* AWS / Azure\n* Jenkins / GitHub Actions", "type": "success" },
+            "cat about.txt": { "response": "NAME: Gadi Rapaport\nROLE: Student & Mobile Developer\nFOCUS: Android Studio, Python, Servers.", "type": "success" },
+            "cat skills.md": { "response": "# Technical Skills\n* Android App Development\n* Python / Automation\n* Docker / Containers\n* Linux / Server Management\n* Web Development", "type": "success" },
             "cat contact.info": { "response": "Email: dshrppury@gmail.com\nPhone: 055-929-7328\nLocation: Bnei Brak, Israel", "type": "success" },
-            "about": { "response": "I am Gadi Rapaport. DevOps Engineer | Python Developer | AI Enthusiast.", "type": "success" },
-            "skills": { "response": "[+] Python, Java, Bash\n[+] Docker, Kubernetes\n[+] CI/CD, AWS\n[+] Linux Administration", "type": "success" },
+            "about": { "response": "I am Gadi Rapaport. Student | Mobile Developer | Systems Architect.", "type": "success" },
+            "skills": { "response": "[+] Android Studio\n[+] Python Development\n[+] Docker\n[+] Server Management\n[+] Website Building", "type": "success" },
             "contact": { "response": "Email: dshrppury@gmail.com | Phone: 055-929-7328 | Bnei Brak", "type": "success" },
             "cv": { "response": "Downloading CV...", "type": "success", "action": "link:https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo" },
             "github": { "response": "Opening GitHub...", "type": "success", "action": "link:https://github.com/gad-rapaport" },
@@ -527,11 +533,10 @@
             "docker": { "response": "Docker version 24.0.5, build ced0996", "type": "success" },
             "docker ps": { "response": "CONTAINER ID   IMAGE        STATUS\n8f3a2b1c4d     portfolio    Up 24 hours\n7e2d1c5b9a     database     Up 24 hours", "type": "info" },
             "k8s": { "response": "Kubernetes cluster is healthy.", "type": "success" },
-            "kubectl get pods": { "response": "NAME         READY   STATUS    RESTARTS\nweb-v1       1/1     Running   0\ndb-0         1/1     Running   0", "type": "success" },
-            "aws": { "response": "aws-cli/2.13.0 Python/3.11.4 Linux/5.15.0", "type": "info" },
+            "python": { "response": "Python 3.11.4", "type": "success" },
+            "mobile": { "response": "Initializing Android Virtual Device... [OK]", "type": "success" },
             "git": { "response": "usage: git [--version] [--help] [-C <path>] <command> [<args>]", "type": "info" },
             "git status": { "response": "On branch main\nYour branch is up to date with 'origin/main'.\n\nnothing to commit, working tree clean", "type": "success" },
-            "terraform": { "response": "Terraform v1.5.7\non linux_amd64", "type": "info" },
             "clear": { "response": "Clearing...", "type": "info", "action": "clear" },
             "sudo": { "response": "gadi is not in the sudoers file. This incident will be reported.", "type": "error" },
             "sudo rm -rf /": { "response": "Nice try. I'm afraid I can't do that.", "type": "error" },
@@ -548,29 +553,16 @@
             { text: 'Type "matrix" for a surprise.', class: "cmd-line matrix-text", delay: 1300 }
         ];
 
-        // --- IP GATHERING LOGIC ---
         function fetchIPAndBoot() {
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
                     const visitorIP = data.ip;
-                    
-                    // הדפסת ה-IP בטרמינל לאפקט סייבר
                     bootSequence.splice(1, 0, { text: `[SYSTEM] Connection logged. Visitor IP: ${visitorIP}`, class: "cmd-line warn", delay: 500 });
-                    
-                    // מקום לשליחת הנתונים ל-Webhook (הסר את ה-/* */ כשתרצה להפעיל)
-                    /*
-                    const webhookUrl = 'YOUR_WEBHOOK_URL_HERE'; // שים פה את כתובת ה-Make/Discord שלך
-                    fetch(webhookUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ip: visitorIP, timestamp: new Date().toISOString() })
-                    });
-                    */
                     runBoot();
                 })
                 .catch(() => {
-                    runBoot(); // מפעיל בכל מקרה גם אם חסימת רשת מונעת משיכת IP
+                    runBoot(); 
                 });
         }
 
@@ -680,10 +672,9 @@
         gsap.from("#home h1", { opacity: 0, y: 50, duration: 2, delay: 0.5, ease: "power3.out" });
         gsap.from(".hero-logo-img", { opacity: 0, scale: 0.8, duration: 1.5, delay: 0.2, ease: "back.out(1.7)" });
         
-        // כאן שינינו את האנימציה שתופעל רק אחרי הבאת ה-IP
         gsap.to(termContainer, { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: fetchIPAndBoot });
         
-        gsap.to(".card", { scrollTrigger: { trigger: "#projects", start: "top 70%" }, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" });
+        gsap.to(".card", { scrollTrigger: { trigger: "#skills", start: "top 70%" }, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" });
         gsap.to(".contact-container", { scrollTrigger: { trigger: "#contact", start: "top 80%" }, opacity: 1, y: 0, duration: 1, ease: "back.out(1.7)" });
 
         document.querySelectorAll('.nav-item').forEach(link => {
