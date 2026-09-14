@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#050816" />
-  <meta name="description" content="Gadi Rapaport — Software Developer focused on Android, Python, automation, APIs, AI products and DevOps." />
+  <meta name="description" content="Gadi Rapaport — Software Developer building Android products, Python automation, APIs, AI features and DevOps workflows." />
   <meta property="og:title" content="Gadi Rapaport | Software Developer" />
-  <meta property="og:description" content="I build complete digital products — from idea and architecture to UI, APIs, automation and deployment." />
+  <meta property="og:description" content="I turn rough ideas into polished digital products: mobile apps, automation, APIs, AI integrations and delivery systems." />
   <meta property="og:type" content="website" />
+  <meta name="color-scheme" content="dark" />
   <title>Gadi Rapaport | Software Developer</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,6 +22,15 @@
   <script src="js/app.js" defer></script>
 </head>
 <body>
+  <div class="boot-screen" id="boot-screen" aria-hidden="true">
+    <div class="boot-card">
+      <span class="boot-kicker">PORTFOLIO OS 3.1</span>
+      <h1>Initializing Gadi.dev</h1>
+      <div class="boot-log" id="boot-log"></div>
+      <div class="boot-progress"><span id="boot-progress"></span></div>
+    </div>
+  </div>
+
   <canvas id="galaxy" aria-hidden="true"></canvas>
   <div class="noise" aria-hidden="true"></div>
   <div class="cursor-glow" aria-hidden="true"></div>
@@ -34,23 +44,45 @@
       <a href="#about">About</a>
       <a href="#capabilities">Capabilities</a>
       <a href="#projects">Projects</a>
+      <a href="#github">GitHub</a>
       <a href="#terminal">Terminal</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="cmd-btn" id="open-command">⌘K</button>
+    <button class="cmd-btn" id="open-command" aria-label="Open command palette">⌘K</button>
   </header>
 
   <main>
     <section class="hero" id="home">
       <div class="hero-badge"><span></span> AVAILABLE FOR SELECTED PROJECTS</div>
-      <h1>Software that feels<br><span class="gradient-text">alive.</span></h1>
-      <p class="hero-copy">I build complete digital products — from idea and architecture to Android, Python, APIs, automation, AI integration and deployment.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#projects">Explore my work</a>
-        <button class="btn btn-secondary" id="hero-terminal">Open terminal</button>
-      </div>
-      <div class="stack-strip" aria-label="Core stack">
-        <span>Android</span><i></i><span>Kotlin</span><i></i><span>Python</span><i></i><span>APIs</span><i></i><span>Automation</span><i></i><span>AI</span><i></i><span>DevOps</span>
+      <div class="hero-grid">
+        <div class="hero-copy-wrap">
+          <div class="hero-kicker">SOFTWARE / PRODUCT / AUTOMATION</div>
+          <h1>Software that feels<br><span class="gradient-text">alive.</span></h1>
+          <p class="hero-copy">I turn rough ideas into polished digital products — Android apps, Python systems, API integrations, automation, AI features and production-ready delivery.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects">Explore my work</a>
+            <button class="btn btn-secondary" id="hero-assistant">Ask portfolio AI</button>
+            <button class="btn btn-secondary" id="hero-terminal">Open terminal</button>
+          </div>
+          <div class="stack-strip" aria-label="Core stack">
+            <span>Android</span><i></i><span>Kotlin</span><i></i><span>Python</span><i></i><span>APIs</span><i></i><span>Automation</span><i></i><span>AI</span><i></i><span>DevOps</span>
+          </div>
+        </div>
+
+        <div class="hero-console glass" aria-label="Live capability preview">
+          <div class="console-top">
+            <span class="console-dot"></span>
+            <span>gadi.dev / live</span>
+            <span class="console-status">ONLINE</span>
+          </div>
+          <div class="console-body">
+            <div class="console-row"><span>role</span><strong>Software Developer</strong></div>
+            <div class="console-row"><span>focus</span><strong>Android · Python · Automation</strong></div>
+            <div class="console-row"><span>mode</span><strong>Build → Integrate → Ship</strong></div>
+            <div class="console-row"><span>strength</span><strong>Turning unclear ideas into real products</strong></div>
+          </div>
+          <div class="console-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
       </div>
       <div class="scroll-cue">SCROLL TO EXPLORE ↓</div>
     </section>
@@ -62,13 +94,13 @@
           <h2>I don't just write code.<br>I turn ideas into systems.</h2>
         </div>
         <div class="about-copy">
-          <p>My strongest skill is translating a rough idea into something real: product logic, interface, architecture, integrations, automation and delivery.</p>
-          <p>I work across mobile, backend, automation and infrastructure — which lets me think about the whole product instead of only one layer.</p>
+          <p>My strongest skill is taking something vague and making it concrete: product logic, user flow, architecture, integrations, automation and delivery.</p>
+          <p>I work across mobile, backend, AI and infrastructure, which means I can think about the whole product instead of one isolated layer.</p>
           <div class="about-stats">
-            <div><strong>Android</strong><span>Apps & product UI</span></div>
-            <div><strong>Python</strong><span>Automation & backend</span></div>
-            <div><strong>AI</strong><span>Practical integration</span></div>
-            <div><strong>DevOps</strong><span>CI/CD & systems</span></div>
+            <div><strong>Android</strong><span>Native apps & product UI</span></div>
+            <div><strong>Python</strong><span>Automation & backend logic</span></div>
+            <div><strong>AI</strong><span>Practical product integration</span></div>
+            <div><strong>DevOps</strong><span>CI/CD, Linux & delivery</span></div>
           </div>
         </div>
       </div>
@@ -77,8 +109,10 @@
     <section class="section" id="capabilities">
       <div class="section-kicker">02 / CAPABILITIES</div>
       <div class="section-head">
-        <h2>What I can build</h2>
-        <p>Not badges. Real categories of work.</p>
+        <div>
+          <h2>What I can build</h2>
+          <p>Not a wall of badges. Real categories of work I can take from idea to implementation.</p>
+        </div>
       </div>
       <div class="cap-grid" id="capability-grid"></div>
     </section>
@@ -88,35 +122,68 @@
       <div class="section-head inline-head">
         <div>
           <h2>Projects with a story</h2>
-          <p>Selected work across product, automation, mobile and infrastructure.</p>
+          <p>Case studies across mobile, automation, systems and product work.</p>
         </div>
         <div class="filters" id="project-filters"></div>
       </div>
       <div class="project-grid" id="project-grid"></div>
     </section>
 
-    <section class="section github-section">
+    <section class="section github-section" id="github">
       <div class="section-kicker">04 / LIVE GITHUB</div>
       <div class="github-panel glass">
-        <div>
+        <div class="github-intro">
           <span class="eyebrow">PUBLIC ACTIVITY</span>
           <h2>Built in public.</h2>
-          <p>Repository data is loaded live from GitHub when available.</p>
+          <p>Live profile and repository data is loaded from GitHub when available.</p>
+          <a class="btn btn-secondary" href="https://github.com/gad-rapaport" target="_blank" rel="noreferrer">Open GitHub ↗</a>
         </div>
-        <div class="github-stats" id="github-stats">
-          <div><strong>—</strong><span>Repositories</span></div>
-          <div><strong>—</strong><span>Followers</span></div>
-          <div><strong>—</strong><span>Following</span></div>
+        <div class="github-right">
+          <div class="github-stats" id="github-stats">
+            <div><strong>—</strong><span>Repositories</span></div>
+            <div><strong>—</strong><span>Followers</span></div>
+            <div><strong>—</strong><span>Following</span></div>
+          </div>
+          <div class="repo-feed" id="repo-feed">
+            <div class="repo-skeleton"></div>
+            <div class="repo-skeleton"></div>
+            <div class="repo-skeleton"></div>
+          </div>
         </div>
-        <a class="btn btn-secondary" href="https://github.com/gad-rapaport" target="_blank" rel="noreferrer">Open GitHub ↗</a>
+      </div>
+    </section>
+
+    <section class="section" id="assistant">
+      <div class="section-kicker">05 / PORTFOLIO AI</div>
+      <div class="assistant-shell glass">
+        <div class="assistant-copy">
+          <span class="eyebrow">LOCAL KNOWLEDGE ASSISTANT</span>
+          <h2>Ask about my work.</h2>
+          <p>This assistant answers from the portfolio data already loaded in the browser. No API key is required.</p>
+          <div class="assistant-chips" id="assistant-chips">
+            <button data-q="What can you build with Android?">Android</button>
+            <button data-q="Which projects use Python?">Python</button>
+            <button data-q="Tell me about TipTrip">TipTrip</button>
+            <button data-q="What are your DevOps skills?">DevOps</button>
+          </div>
+        </div>
+        <div class="assistant-chat">
+          <div class="assistant-messages" id="assistant-messages" aria-live="polite"></div>
+          <form class="assistant-form" id="assistant-form">
+            <input id="assistant-input" placeholder="Ask about projects, skills, stack…" autocomplete="off" />
+            <button type="submit">Ask ↗</button>
+          </form>
+        </div>
       </div>
     </section>
 
     <section class="section" id="terminal">
-      <div class="section-kicker">05 / INTERACTIVE TERMINAL</div>
+      <div class="section-kicker">06 / INTERACTIVE TERMINAL</div>
       <div class="section-head">
-        <h2>Explore like a developer.</h2>
-        <p>Try: <code>help</code>, <code>projects</code>, <code>project tiptrip</code>, <code>skills android</code>, <code>github</code>.</p>
+        <div>
+          <h2>Explore like a developer.</h2>
+          <p>Try: <code>help</code>, <code>projects</code>, <code>project tiptrip</code>, <code>skills android</code>, <code>github</code>.</p>
+        </div>
       </div>
       <div class="terminal glass" id="terminal-box">
         <div class="terminal-titlebar">
@@ -133,7 +200,7 @@
     </section>
 
     <section class="section contact" id="contact">
-      <div class="section-kicker">06 / CONTACT</div>
+      <div class="section-kicker">07 / CONTACT</div>
       <h2>Have a difficult idea?<br><span class="gradient-text">Good.</span></h2>
       <p>I like projects that need both product thinking and technical execution.</p>
       <div class="contact-actions">
@@ -146,7 +213,7 @@
 
   <footer>
     <span>Gadi Rapaport © 2026</span>
-    <span>Built as a product, not a template.</span>
+    <span>Portfolio 3.1 · Built as a product, not a template.</span>
   </footer>
 
   <dialog id="project-modal" class="project-modal">

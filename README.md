@@ -1,72 +1,39 @@
-# Gadi Rapaport — Interactive Portfolio 3.0
+# Gadi Rapaport — Interactive Portfolio 3.1
 
-A complete rebuild of the original interactive portfolio, focused on presenting real product-building capability rather than only DevOps-themed effects.
+A product-style interactive developer portfolio focused on Android, Python, automation, APIs, AI integration and DevOps.
 
-## What changed
+## Highlights
 
-- New positioning: Software Developer / Product Builder
-- Android, Python, automation, APIs, AI and DevOps are represented together
-- Project case studies instead of a flat project list
-- Live GitHub profile stats
-- Interactive developer terminal
-- Command palette (`Ctrl/Cmd + K`)
-- Three.js particle background
-- Responsive mobile-first layout
+- Three.js realtime background
+- GSAP transitions
+- Project case studies with visual previews
+- Live GitHub stats and repository feed
+- Local portfolio assistant with no API key
+- Interactive terminal
+- Cmd/Ctrl + K command palette
+- Responsive mobile layout
 - Reduced-motion accessibility support
-- Data-driven project and capability files
-- No build step required
-
-## Structure
-
-```text
-.
-├── index.html
-├── css/
-│   └── main.css
-├── js/
-│   └── app.js
-├── data/
-│   ├── profile.json
-│   ├── capabilities.json
-│   └── projects.json
-└── README.md
-```
 
 ## Run locally
 
-Because the site loads JSON using `fetch`, run it through a local web server rather than opening `index.html` directly.
+Because the site loads JSON using `fetch()`, do not open `index.html` directly with `file://`.
 
-### Python
+From the project folder, run one of these:
+
 ```bash
 python -m http.server 8000
 ```
-Then open `http://localhost:8000`.
 
-### VS Code
-Use Live Server.
+Then open:
+
+```text
+http://localhost:8000
+```
+
+You can also use VS Code Live Server.
 
 ## Deploy
 
-Works directly on GitHub Pages, Netlify, Vercel static hosting, Cloudflare Pages or any regular static web server.
+The project is static and works well with GitHub Pages, Netlify or Vercel.
 
-## Customize
-
-- Projects: `data/projects.json`
-- Skills/capabilities: `data/capabilities.json`
-- Contact links: `index.html` and `data/profile.json`
-- Main styling: `css/main.css`
-- Terminal and interactions: `js/app.js`
-
-## Suggested replacement workflow
-
-1. Back up the old repository.
-2. Remove old `index.html`, `commands.json` and obsolete assets.
-3. Copy this project into the repository root.
-4. Test locally.
-5. Commit and push.
-
-```bash
-git add .
-git commit -m "Rebuild portfolio as v3"
-git push
-```
+For GitHub Pages, keep `index.html` in the repository root and deploy the `main` branch/root folder.
