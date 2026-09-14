@@ -1,873 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gadi Rapaport | Mobile & Systems Portfolio</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050816" />
+  <meta name="description" content="Gadi Rapaport — Software Developer focused on Android, Python, automation, APIs, AI products and DevOps." />
+  <meta property="og:title" content="Gadi Rapaport | Software Developer" />
+  <meta property="og:description" content="I build complete digital products — from idea and architecture to UI, APIs, automation and deployment." />
+  <meta property="og:type" content="website" />
+  <title>Gadi Rapaport | Software Developer</title>
 
-    <style>
-        :root {
-            --bg-deep: #020617; 
-            --accent-blue: #00C2FF; 
-            --accent-apple: #E63946; 
-            --accent-red: #D90429;
-            --accent-matrix: #00FF41;
-            --terminal-bg: rgba(15, 15, 20, 0.95);
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css" />
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        html { scroll-behavior: smooth; }
-
-        body { 
-            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
-            color: white; font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            transition: background 1s ease;
-        }
-
-        #cursor {
-            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
-            border: 2px solid var(--accent-blue); border-radius: 50%;
-            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
-            mix-blend-mode: difference;
-        }
-        #cursor.hovered { width: 50px; height: 50px; background: rgba(0, 194, 255, 0.2); border-color: transparent; }
-
-        body.matrix-active #cursor { border-color: var(--accent-matrix); }
-        body.matrix-active #cursor.hovered { background: rgba(0, 255, 65, 0.2); }
-        body.matrix-active .terminal-window {
-            border-color: var(--accent-matrix);
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
-        }
-        body.matrix-active .prompt { color: var(--accent-matrix); text-shadow: 0 0 5px var(--accent-matrix); }
-        body.matrix-active .info { color: #a9b1d6; }
-        body.matrix-active .terminal-header { border-bottom-color: var(--accent-matrix); }
-        body.matrix-active h1 span { color: var(--accent-matrix) !important; text-shadow: 0 0 20px rgba(0,255,65,0.4); }
-
-        canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; }
-
-        nav {
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-            padding: 10px 30px; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 100px;
-            z-index: 100; display: flex; align-items: center; gap: 20px;
-        }
-        .nav-logo-img { height: 30px; width: auto; }
-        .nav-item {
-            text-decoration: none; color: rgba(255,255,255,0.7);
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
-            transition: 0.3s; position: relative; font-weight: 600; cursor: none;
-        }
-        .nav-item:hover, .nav-item.active { color: var(--accent-blue); text-shadow: 0 0 10px var(--accent-blue); }
-
-        .hero-logo-container { margin-bottom: 20px; animation: float 6s ease-in-out infinite; }
-        .hero-logo-img { height: 120px; width: auto; filter: drop-shadow(0 0 20px rgba(217, 4, 41, 0.4)); }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-
-        .terminal-window {
-            width: 100%; max-width: 650px; background: var(--terminal-bg);
-            border: 1px solid #333; border-radius: 8px; margin-top: 30px;
-            font-family: 'Fira Code', monospace; padding: 0; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6); opacity: 0; transform: translateY(20px);
-            text-align: left; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .terminal-header {
-            background: #1a1b26; padding: 8px 15px; display: flex; gap: 6px;
-            border-bottom: 1px solid #333; align-items: center; transition: 0.4s ease;
-        }
-        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
-        .terminal-body { 
-            padding: 15px; color: #a9b1d6; font-size: 0.9rem; height: 300px; overflow-y: auto; 
-            cursor: text; scroll-behavior: smooth;
-        }
-        .cmd-line { margin-bottom: 5px; display: block; line-height: 1.4; white-space: pre-wrap; }
-        .success { color: #9ece6a; } .warn { color: #e0af68; } .info { color: #7aa2f7; } .error { color: #f7768e; }
-        .matrix-text { color: var(--accent-matrix); text-shadow: 0 0 8px var(--accent-matrix); }
-        
-        .input-line { display: flex; align-items: center; }
-        .prompt { color: #7aa2f7; margin-right: 8px; font-weight: bold; transition: 0.4s ease; }
-        #cmd-input {
-            background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace;
-            font-size: 0.9rem; flex: 1; outline: none; cursor: none;
-        }
-
-        .cam-container {
-            position: fixed; bottom: 30px; left: 30px; z-index: 101;
-            display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
-        }
-        #cam-hint {
-            font-size: 0.75rem; color: var(--accent-red); font-weight: bold;
-            text-shadow: 0 0 10px var(--accent-red);
-            animation: bounce 2s infinite; pointer-events: none;
-            text-transform: uppercase; letter-spacing: 1px; background: rgba(0,0,0,0.6);
-            padding: 5px 10px; border-radius: 4px; border: 1px solid var(--accent-red);
-        }
-        #cam-toggle {
-            background: rgba(255,255,255,0.1); border: 1px solid white;
-            color: white; padding: 12px 25px; border-radius: 30px;
-            font-family: 'Montserrat'; font-size: 12px; letter-spacing: 1px; font-weight: bold;
-            cursor: none; transition: 0.3s; text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
-            display: flex; align-items: center; gap: 8px;
-        }
-        #cam-toggle:hover { background: white; color: black; box-shadow: 0 0 25px rgba(255,255,255,0.4); }
-        #cam-toggle.active { background: var(--accent-blue); border-color: var(--accent-blue); color: black; }
-        
-        .spinner {
-            width: 12px; height: 12px; border: 2px solid rgba(0,0,0,0.3);
-            border-top: 2px solid black; border-radius: 50%;
-            animation: spin 1s linear infinite; display: none;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-        section {
-            min-height: 100vh; padding: 120px 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            pointer-events: none;
-        }
-        .interactive { pointer-events: auto; cursor: none; }
-
-        h1 {
-            font-family: 'Cinzel', serif; font-size: 4rem; font-weight: 700;
-            letter-spacing: 2px; text-align: center; color: #fff;
-            text-shadow: 0 0 40px rgba(0, 194, 255, 0.3); margin-bottom: 10px; line-height: 1.1;
-        }
-        p.subtitle {
-            font-size: 1.1rem; letter-spacing: 2px; color: rgba(255,255,255,0.8);
-            text-transform: uppercase; margin-bottom: 30px; font-weight: 300; text-align: center;
-            min-height: 1.5em;
-        }
-        .cursor-blink { animation: blink 1s step-end infinite; border-right: 2px solid var(--accent-blue); }
-        @keyframes blink { 50% { border-color: transparent; } }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; width: 100%; max-width: 1100px; }
-        .card {
-            background: rgba(10, 15, 25, 0.7); border: 1px solid rgba(255,255,255,0.1);
-            padding: 35px; border-radius: 16px; text-align: left;
-            transition: 0.4s ease; transform: translateY(30px); opacity: 0;
-            position: relative; overflow: hidden; backdrop-filter: blur(10px);
-        }
-        .card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
-            background: var(--accent-red); opacity: 0.5; transition: 0.3s;
-        }
-        .card:hover { 
-            background: rgba(25, 35, 50, 0.9); transform: translateY(-5px); 
-            border-color: var(--accent-blue); box-shadow: 0 10px 40px rgba(0, 194, 255, 0.2);
-        }
-        .card:hover::before { opacity: 1; width: 6px; box-shadow: 0 0 15px var(--accent-red); }
-        
-        .card h3 { font-family: 'Montserrat', sans-serif; margin-bottom: 10px; font-size: 1.3rem; color: white; font-weight: 700; }
-        .card h4 { font-size: 0.8rem; color: var(--accent-blue); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
-        .card p { color: #ccc; line-height: 1.6; font-size: 0.9rem; margin-bottom: 15px; }
-        .card-tech { font-size: 0.75rem; color: #888; font-family: monospace; }
-
-        .contact-container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
-        .btn-main {
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            padding: 16px; text-decoration: none; font-family: 'Montserrat'; font-weight: 600;
-            border-radius: 8px; transition: 0.3s; letter-spacing: 1px; font-size: 0.9rem;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-email { background: rgba(255,255,255,0.05); color: white; }
-        .btn-email:hover { background: rgba(255,255,255,0.15); border-color: var(--accent-blue); transform: translateY(-2px); }
-        .btn-cv { 
-            background: var(--accent-red); color: white; border: none; font-weight: 800;
-            margin-bottom: 20px; box-shadow: 0 0 20px rgba(217, 4, 41, 0.3);
-        }
-        .btn-cv:hover { background: white; color: black; transform: translateY(-2px); box-shadow: 0 0 30px white; }
-
-        #status-indicator {
-            position: fixed; bottom: 30px; right: 30px; z-index: 100;
-            font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
-            color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 15px; border-radius: 50px; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px; background: black;
-        }
-        .dot { width: 6px; height: 6px; background: #333; border-radius: 50%; transition: 0.3s; }
-        .active-hand .dot { background: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue); }
-        .active-fist .dot { background: var(--accent-apple); box-shadow: 0 0 15px var(--accent-apple); }
-
-        #input-video { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; z-index: -100; }
-        
-        .info-btn {
-            width: 30px; height: 30px; background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; cursor: none; transition: 0.3s; font-size: 0.9rem;
-        }
-        .info-btn:hover, .info-btn.active { background: white; color: black; border-color: white; }
-
-        .privacy-tooltip {
-            position: absolute; bottom: 110%; left: 0; width: 260px;
-            background: rgba(5, 7, 10, 0.95); border: 1px solid rgba(255,255,255,0.1);
-            border-left: 3px solid var(--accent-blue); padding: 15px; border-radius: 8px;
-            font-size: 0.8rem; line-height: 1.4; color: #ccc;
-            opacity: 0; visibility: hidden; transform: translateY(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none; box-shadow: 0 10px 40px rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000;
-        }
-        .cam-container:hover .privacy-tooltip { opacity: 1; visibility: visible; transform: translateY(0); }
-        .privacy-tooltip.show { opacity: 1; visibility: visible; transform: translateY(0); }
-    </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="js/app.js" defer></script>
 </head>
 <body>
+  <canvas id="galaxy" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
 
-    <div id="cursor"></div>
-
+  <header class="topbar glass">
+    <a class="brand" href="#home" aria-label="Home">
+      <span class="brand-mark">GR</span>
+      <span class="brand-text">Gadi Rapaport</span>
+    </a>
     <nav>
-        <img src="logo.png" alt="Logo" class="nav-logo-img">
-        <a href="#home" class="nav-item active">Home</a>
-        <a href="#skills" class="nav-item">Skills</a>
-        <a href="#contact" class="nav-item">Contact</a>
+      <a href="#about">About</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#projects">Projects</a>
+      <a href="#terminal">Terminal</a>
+      <a href="#contact">Contact</a>
     </nav>
+    <button class="cmd-btn" id="open-command">⌘K</button>
+  </header>
 
-    <div class="cam-container">
-        <div class="privacy-tooltip" id="privacy-tooltip">
-            <div style="margin-bottom:5px; color:white; font-weight:bold;">🔒 Privacy First</div>
-            Video processed locally. No data saved.
-            <div style="margin-top:5px; color:var(--accent-blue); font-weight:bold;">
-                Gestures: Open Hand 🖐️ vs Fist ✊
-            </div>
-        </div>
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-badge"><span></span> AVAILABLE FOR SELECTED PROJECTS</div>
+      <h1>Software that feels<br><span class="gradient-text">alive.</span></h1>
+      <p class="hero-copy">I build complete digital products — from idea and architecture to Android, Python, APIs, automation, AI integration and deployment.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects">Explore my work</a>
+        <button class="btn btn-secondary" id="hero-terminal">Open terminal</button>
+      </div>
+      <div class="stack-strip" aria-label="Core stack">
+        <span>Android</span><i></i><span>Kotlin</span><i></i><span>Python</span><i></i><span>APIs</span><i></i><span>Automation</span><i></i><span>AI</span><i></i><span>DevOps</span>
+      </div>
+      <div class="scroll-cue">SCROLL TO EXPLORE ↓</div>
+    </section>
 
-        <div id="cam-hint">Try the Magic 👇</div>
-        
-        <div style="display:flex; align-items:center; gap:10px;">
-            <button id="cam-toggle" class="interactive">
-                <span class="btn-text">START CAMERA</span>
-                <div class="spinner" id="loading-spinner"></div>
-            </button>
-            <div class="info-btn interactive" onclick="toggleTooltip(event)">
-                <i class="fas fa-info-circle"></i>
-            </div>
+    <section class="section" id="about">
+      <div class="section-kicker">01 / ABOUT</div>
+      <div class="about-grid">
+        <div>
+          <h2>I don't just write code.<br>I turn ideas into systems.</h2>
         </div>
+        <div class="about-copy">
+          <p>My strongest skill is translating a rough idea into something real: product logic, interface, architecture, integrations, automation and delivery.</p>
+          <p>I work across mobile, backend, automation and infrastructure — which lets me think about the whole product instead of only one layer.</p>
+          <div class="about-stats">
+            <div><strong>Android</strong><span>Apps & product UI</span></div>
+            <div><strong>Python</strong><span>Automation & backend</span></div>
+            <div><strong>AI</strong><span>Practical integration</span></div>
+            <div><strong>DevOps</strong><span>CI/CD & systems</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="capabilities">
+      <div class="section-kicker">02 / CAPABILITIES</div>
+      <div class="section-head">
+        <h2>What I can build</h2>
+        <p>Not badges. Real categories of work.</p>
+      </div>
+      <div class="cap-grid" id="capability-grid"></div>
+    </section>
+
+    <section class="section projects-section" id="projects">
+      <div class="section-kicker">03 / SELECTED WORK</div>
+      <div class="section-head inline-head">
+        <div>
+          <h2>Projects with a story</h2>
+          <p>Selected work across product, automation, mobile and infrastructure.</p>
+        </div>
+        <div class="filters" id="project-filters"></div>
+      </div>
+      <div class="project-grid" id="project-grid"></div>
+    </section>
+
+    <section class="section github-section">
+      <div class="section-kicker">04 / LIVE GITHUB</div>
+      <div class="github-panel glass">
+        <div>
+          <span class="eyebrow">PUBLIC ACTIVITY</span>
+          <h2>Built in public.</h2>
+          <p>Repository data is loaded live from GitHub when available.</p>
+        </div>
+        <div class="github-stats" id="github-stats">
+          <div><strong>—</strong><span>Repositories</span></div>
+          <div><strong>—</strong><span>Followers</span></div>
+          <div><strong>—</strong><span>Following</span></div>
+        </div>
+        <a class="btn btn-secondary" href="https://github.com/gad-rapaport" target="_blank" rel="noreferrer">Open GitHub ↗</a>
+      </div>
+    </section>
+
+    <section class="section" id="terminal">
+      <div class="section-kicker">05 / INTERACTIVE TERMINAL</div>
+      <div class="section-head">
+        <h2>Explore like a developer.</h2>
+        <p>Try: <code>help</code>, <code>projects</code>, <code>project tiptrip</code>, <code>skills android</code>, <code>github</code>.</p>
+      </div>
+      <div class="terminal glass" id="terminal-box">
+        <div class="terminal-titlebar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>gadi@portfolio:~</span>
+          <button id="terminal-clear">clear</button>
+        </div>
+        <div class="terminal-body" id="terminal-output" aria-live="polite"></div>
+        <form class="terminal-input-row" id="terminal-form">
+          <span class="prompt">gadi@portfolio:~$</span>
+          <input id="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal command" />
+        </form>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="section-kicker">06 / CONTACT</div>
+      <h2>Have a difficult idea?<br><span class="gradient-text">Good.</span></h2>
+      <p>I like projects that need both product thinking and technical execution.</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary" href="mailto:dshrppury@gmail.com">Email me</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/gad-rapaport-a12988345" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        <a class="btn btn-secondary" href="https://github.com/gad-rapaport" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Gadi Rapaport © 2026</span>
+    <span>Built as a product, not a template.</span>
+  </footer>
+
+  <dialog id="project-modal" class="project-modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+    <div id="modal-content"></div>
+  </dialog>
+
+  <div class="command-palette" id="command-palette" hidden>
+    <div class="palette-backdrop"></div>
+    <div class="palette-card glass">
+      <input id="palette-input" placeholder="Search sections, projects, skills…" autocomplete="off" />
+      <div id="palette-results"></div>
+      <small>↑↓ navigate · Enter open · Esc close</small>
     </div>
-
-    <section id="home">
-        <div class="hero-logo-container">
-            <img src="logo.png" alt="Gadi Logo" class="hero-logo-img" id="main-logo">
-        </div>
-        
-        <h1 style="font-size: 2rem; margin-bottom: 0; opacity: 0.6; font-weight: 400;">GAD RAPAPORT</h1>
-        <h1>Student &<br><span>Mobile Developer</span></h1>
-        
-        <p class="subtitle"><span id="typewriter"></span><span class="cursor-blink">&nbsp;</span></p>
-        
-        <a href="https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo" class="interactive btn-main btn-cv">
-            <i class="fas fa-file-download"></i> DOWNLOAD CV
-        </a>
-
-        <div class="terminal-window interactive" id="term-container" onclick="document.getElementById('cmd-input').focus()">
-            <div class="terminal-header">
-                <div class="term-dot red"></div>
-                <div class="term-dot yellow"></div>
-                <div class="term-dot green"></div>
-                
-                <div style="display: flex; align-items: center; gap: 10px; margin-left: 10px;">
-                    <span style="font-size:10px; color:#666;">gadi@root:~</span>
-                    <img src="https://visitor-badge.laobi.icu/badge?page_id=gadi-rapaport.portfolio" alt="visitors" style="height: 15px; opacity: 0.8;">
-                </div>
-
-            </div>
-            <div class="terminal-body" id="terminal-body">
-                <div class="input-line" id="input-line" style="display:none;">
-                    <span class="prompt">gadi@root:~$</span>
-                    <input type="text" id="cmd-input" autocomplete="off" spellcheck="false">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills">
-        <h1>Technical Expertise</h1>
-        <div class="grid interactive">
-            <div class="card">
-                <h3>Mobile Applications</h3>
-                <h4>Android Studio</h4>
-                <p>Developing native Android applications with a strong focus on clean architecture, dynamic UI, and innovative solutions.</p>
-                <span class="card-tech">Stack: Android Studio, Mobile SDKs</span>
-            </div>
-            <div class="card">
-                <h3>Python Development</h3>
-                <h4>Automation & Logic</h4>
-                <p>Creating efficient scripts, web scraping tools, and powerful backend logic for seamless digital operations.</p>
-                <span class="card-tech">Stack: Python, APIs, Automation</span>
-            </div>
-            <div class="card">
-                <h3>Docker Containers</h3>
-                <h4>Deployment & Ecosystem</h4>
-                <p>Packaging code and Telegram bots into lightweight, portable, and reliable containerized environments.</p>
-                <span class="card-tech">Stack: Docker, Containers</span>
-            </div>
-            <div class="card">
-                <h3>Server Management</h3>
-                <h4>Linux & Cloud</h4>
-                <p>Setting up, maintaining, and troubleshooting server infrastructure to ensure high performance and availability.</p>
-                <span class="card-tech">Stack: Ubuntu, Cloud Hosting, Servers</span>
-            </div>
-            <div class="card">
-                <h3>Website Building</h3>
-                <h4>Web Development</h4>
-                <p>Designing responsive, interactive, and modern websites tailored to provide excellent user experiences.</p>
-                <span class="card-tech">Stack: HTML, CSS, JavaScript</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h1>Hire Me</h1>
-        <div class="contact-container interactive">
-            <a href="mailto:dshrppury@gmail.com" class="btn-main btn-email">
-                <i class="fas fa-envelope"></i> dshrppury@gmail.com
-            </a>
-            <a href="https://wa.me/972559297328" target="_blank" class="btn-main btn-email" style="border-color:#25D366; color:#25D366;">
-                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-            </a>
-            <div style="display:flex; gap:15px; margin-top:10px;">
-                <a href="https://github.com/gad-rapaport" target="_blank" class="btn-main btn-email" style="flex:1;">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="https://www.linkedin.com/in/gad-rapaport-a12988345" target="_blank" class="btn-main btn-email" style="flex:1;">
-                    <i class="fab fa-linkedin"></i> LinkedIn
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <div id="status-indicator">
-        <div class="dot"></div>
-        <span id="status-text">Camera Off</span>
-    </div>
-
-    <video id="input-video" playsinline></video>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-
-    <script>
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-        document.querySelectorAll('.interactive, a, button, input').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
-
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x020617, 0.0008);
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 5000);
-        camera.position.set(0, 0, 1500); 
-        camera.lookAt(0, 0, 0);
-
-        const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.body.appendChild(renderer.domElement);
-
-        const particleCount = 14000;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const originalPos = new Float32Array(particleCount * 3);
-        const randomOffsets = new Float32Array(particleCount * 3);
-        const appleCoords = new Float32Array(particleCount * 3); 
-        
-        let isTextMode = false;
-        let isMatrixMode = false;
-        let textTimeout;
-        const textTargets = new Float32Array(particleCount * 3);
-        
-        const spread = 2000;
-        const depth = 6000;
-
-        for(let i=0; i<particleCount; i++) {
-            const i3 = i * 3;
-            const r = Math.random() * spread;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            
-            const x = r * Math.sin(phi) * Math.cos(theta);
-            const y = r * Math.sin(phi) * Math.sin(theta);
-            const z = (Math.random() - 0.5) * depth;
-
-            positions[i3] = x; positions[i3+1] = y; positions[i3+2] = z;
-            originalPos[i3] = x; originalPos[i3+1] = y; originalPos[i3+2] = z;
-            
-            const cloudR = 400 + Math.random() * 400;
-            randomOffsets[i3] = cloudR * Math.sin(phi) * Math.cos(theta);
-            randomOffsets[i3+1] = cloudR * Math.sin(phi) * Math.sin(theta);
-            randomOffsets[i3+2] = cloudR * Math.cos(phi);
-
-            const phiA = Math.acos(1 - 2 * (i + 0.5) / particleCount); 
-            const thetaA = Math.PI * (1 + Math.sqrt(5)) * i;
-            const R = 320;
-            const dimple = 1 - 0.3 * Math.pow(Math.sin(phiA), 2);
-            const rApple = R * dimple;
-            
-            appleCoords[i3] = rApple * Math.sin(phiA) * Math.cos(thetaA);
-            appleCoords[i3+1] = rApple * Math.cos(phiA); 
-            appleCoords[i3+2] = rApple * Math.sin(phiA) * Math.sin(thetaA);
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-        const getTexture = () => {
-            const c = document.createElement('canvas'); c.width=64; c.height=64;
-            const ctx = c.getContext('2d');
-            const g = ctx.createRadialGradient(32,32,0,32,32,32);
-            g.addColorStop(0, 'rgba(255,255,255,1)');
-            g.addColorStop(0.3, 'rgba(255,255,255,0.8)');
-            g.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = g; ctx.fillRect(0,0,64,64);
-            const t = new THREE.Texture(c); t.needsUpdate = true; return t;
-        }
-
-        const material = new THREE.PointsMaterial({
-            size: 3.5, map: getTexture(), transparent: true, opacity: 0.8,
-            blending: THREE.AdditiveBlending, depthWrite: false, color: 0x00C2FF 
-        });
-
-        const starSystem = new THREE.Points(geometry, material);
-        scene.add(starSystem);
-
-        function triggerTextEffect(text) {
-            const tempCanvas = document.createElement('canvas');
-            const ctx = tempCanvas.getContext('2d');
-            tempCanvas.width = window.innerWidth;
-            tempCanvas.height = window.innerHeight;
-
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-            
-            ctx.font = 'bold 220px Montserrat'; 
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(text.toUpperCase(), tempCanvas.width / 2, tempCanvas.height / 2);
-
-            const imageData = ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
-            const points = [];
-
-            for (let y = 0; y < tempCanvas.height; y += 3) {
-                for (let x = 0; x < tempCanvas.width; x += 3) {
-                    const index = (y * tempCanvas.width + x) * 4;
-                    if (imageData[index] > 128) { 
-                        points.push({
-                            x: (x - tempCanvas.width / 2) * 1.6,
-                            y: -(y - tempCanvas.height / 2) * 1.6,
-                            z: (Math.random() - 0.5) * 5 
-                        });
-                    }
-                }
-            }
-
-            for (let i = 0; i < particleCount; i++) {
-                const i3 = i * 3;
-                if (i < points.length) {
-                    textTargets[i3] = points[i].x;
-                    textTargets[i3 + 1] = points[i].y;
-                    textTargets[i3 + 2] = points[i].z;
-                } else {
-                    textTargets[i3] = originalPos[i3];
-                    textTargets[i3 + 1] = originalPos[i3 + 1];
-                    textTargets[i3 + 2] = originalPos[i3 + 2];
-                }
-            }
-            
-            isTextMode = true;
-            clearTimeout(textTimeout);
-            
-            textTimeout = setTimeout(() => {
-                isTextMode = false;
-            }, 6000);
-        }
-
-        const terminalBody = document.getElementById('terminal-body');
-        const inputLine = document.getElementById('input-line');
-        const cmdInput = document.getElementById('cmd-input');
-        const termContainer = document.getElementById('term-container');
-        
-        const availableCommands = {
-            "help": { "response": "AVAILABLE COMMANDS MATRIX:\n\n[NAVIGATION]  ls, ls -la, cd, pwd, cat, tree\n[SKILLS]      docker, k8s, python, mobile, git\n[SYSTEM]      whoami, date, uptime, top, ping\n[PERSONAL]    about, contact, cv, github, linkedin\n[FUN]         render <text>, matrix, clear, sudo, coffee, joke\n\nType a command to execute.", "type": "info" },
-            "ls": { "response": "about.txt   skills.md   contact.info   cv.pdf", "type": "success" },
-            "ls -la": { "response": "drwxr-xr-x 2 gadi root 4096 Mar 15 12:00 .\n-rw-r--r-- 1 gadi root  512 Mar 15 12:00 about.txt\n-rw-r--r-- 1 gadi root 1024 Mar 15 12:00 skills.md\n-rw-r--r-- 1 gadi root  128 Mar 15 12:00 contact.info\n-rwxr-xr-x 1 gadi root 8192 Mar 15 12:00 cv.pdf", "type": "success" },
-            "pwd": { "response": "/home/gadi/portfolio", "type": "success" },
-            "cd": { "response": "Returned to /home/gadi", "type": "info" },
-            "cd ..": { "response": "Access Denied: Restricted shell environment.", "type": "error" },
-            "cd ~": { "response": "/home/gadi", "type": "info" },
-            "tree": { "response": ".\n├── about.txt\n├── skills.md\n├── contact.info\n└── cv.pdf", "type": "success" },
-            "cat": { "response": "usage: cat <filename>", "type": "info" },
-            "cat about.txt": { "response": "NAME: Gadi Rapaport\nROLE: Student & Mobile Developer\nFOCUS: Android Studio, Python, Servers.", "type": "success" },
-            "cat skills.md": { "response": "# Technical Skills\n* Android App Development\n* Python / Automation\n* Docker / Containers\n* Linux / Server Management\n* Web Development", "type": "success" },
-            "cat contact.info": { "response": "Email: dshrppury@gmail.com\nPhone: 055-929-7328\nLocation: Bnei Brak, Israel", "type": "success" },
-            "about": { "response": "I am Gadi Rapaport. Student | Mobile Developer | Systems Architect.", "type": "success" },
-            "skills": { "response": "[+] Android Studio\n[+] Python Development\n[+] Docker\n[+] Server Management\n[+] Website Building", "type": "success" },
-            "contact": { "response": "Email: dshrppury@gmail.com | Phone: 055-929-7328 | Bnei Brak", "type": "success" },
-            "cv": { "response": "Downloading CV...", "type": "success", "action": "link:https://drive.google.com/uc?export=download&id=1owwPtl-tbgsiiXPOq8xEVT1vUsJG7GBo" },
-            "github": { "response": "Opening GitHub...", "type": "success", "action": "link:https://github.com/gad-rapaport" },
-            "linkedin": { "response": "Opening LinkedIn...", "type": "success", "action": "link:https://www.linkedin.com/in/gad-rapaport-a12988345" },
-            "whoami": { "response": "root", "type": "success" },
-            "date": { "response": new Date().toString(), "type": "info" },
-            "uptime": { "response": " 13:37:00 up 42 days, 1 user, load average: 0.00, 0.01, 0.05", "type": "info" },
-            "top": { "response": "PID USER      PR  NI  VIRT  RES  %CPU %MEM  COMMAND\n  1 root      20   0  112m  14m   0.0  0.1  systemd\n  7 gadi      20   0 14.2g 1.1g   2.3 12.0  java", "type": "info" },
-            "ping": { "response": "usage: ping <destination>", "type": "info" },
-            "ping google.com": { "response": "64 bytes from 142.250.185.78: icmp_seq=1 ttl=117 time=14.2 ms\n64 bytes from 142.250.185.78: icmp_seq=2 ttl=117 time=15.1 ms", "type": "success" },
-            "curl": { "response": "curl: try 'curl --help' for more information", "type": "info" },
-            "docker": { "response": "Docker version 24.0.5, build ced0996", "type": "success" },
-            "docker ps": { "response": "CONTAINER ID   IMAGE        STATUS\n8f3a2b1c4d     portfolio    Up 24 hours\n7e2d1c5b9a     database     Up 24 hours", "type": "info" },
-            "k8s": { "response": "Kubernetes cluster is healthy.", "type": "success" },
-            "python": { "response": "Python 3.11.4", "type": "success" },
-            "mobile": { "response": "Initializing Android Virtual Device... [OK]", "type": "success" },
-            "git": { "response": "usage: git [--version] [--help] [-C <path>] <command> [<args>]", "type": "info" },
-            "git status": { "response": "On branch main\nYour branch is up to date with 'origin/main'.\n\nnothing to commit, working tree clean", "type": "success" },
-            "clear": { "response": "Clearing...", "type": "info", "action": "clear" },
-            "sudo": { "response": "gadi is not in the sudoers file. This incident will be reported.", "type": "error" },
-            "sudo rm -rf /": { "response": "Nice try. I'm afraid I can't do that.", "type": "error" },
-            "coffee": { "response": "☕ Here is your Java.", "type": "success" },
-            "joke": { "response": "Why do programmers prefer dark mode? Because light attracts bugs.", "type": "info" },
-            "vim": { "response": "You are trapped in Vim. (Just kidding, press Esc)", "type": "warn" }
-        };
-
-        const bootSequence = [
-            { text: "gadi@root:~$ initializing_kernel...", class: "cmd-line" },
-            { text: "> Loading configuration... [OK]", class: "cmd-line success", delay: 300 },
-            { text: "> Starting interactive shell...", class: "cmd-line info", delay: 700 },
-            { text: 'Type "render <word>" to build 3D text.', class: "cmd-line warn", delay: 1000 },
-            { text: 'Type "matrix" for a surprise.', class: "cmd-line matrix-text", delay: 1300 }
-        ];
-
-        function fetchIPAndBoot() {
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    const visitorIP = data.ip;
-                    bootSequence.splice(1, 0, { text: `[SYSTEM] Connection logged. Visitor IP: ${visitorIP}`, class: "cmd-line warn", delay: 500 });
-                    runBoot();
-                })
-                .catch(() => {
-                    runBoot(); 
-                });
-        }
-
-        function runBoot() {
-            let delaySum = 0;
-            bootSequence.forEach((cmd) => {
-                setTimeout(() => {
-                    const line = document.createElement('div');
-                    line.className = cmd.class;
-                    line.textContent = cmd.text;
-                    terminalBody.insertBefore(line, inputLine);
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
-                }, delaySum + (cmd.delay || 0));
-                delaySum += (cmd.delay || 100);
-            });
-            setTimeout(() => {
-                inputLine.style.display = 'flex';
-                cmdInput.focus();
-            }, delaySum + 200);
-        }
-
-        cmdInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const rawCmd = this.value.trim();
-                const cmd = rawCmd.toLowerCase(); 
-
-                const historyLine = document.createElement('div');
-                historyLine.className = 'cmd-line';
-                historyLine.innerHTML = `<span class="prompt">gadi@root:~$</span> ${this.value}`;
-                terminalBody.insertBefore(historyLine, inputLine);
-                
-                let responseText = '';
-                let respClass = 'info';
-                let action = null;
-
-                if (cmd === 'clear') {
-                    terminalBody.innerHTML = '';
-                    terminalBody.appendChild(inputLine);
-                    this.value = '';
-                    setTimeout(()=> this.focus(), 10); 
-                    return;
-                } 
-                else if (cmd.startsWith('render ')) {
-                    const word = rawCmd.substring(7).trim();
-                    if(word.length > 0) {
-                        triggerTextEffect(word);
-                        responseText = `Rendering text: ${word}...`;
-                        respClass = 'success';
-                        
-                        gsap.to(termContainer, { opacity: 0, y: 100, scale: 0.8, duration: 0.8, pointerEvents: "none", ease: "power3.in" });
-                        
-                        setTimeout(() => {
-                            gsap.to(termContainer, { opacity: 1, y: 0, scale: 1, duration: 0.8, pointerEvents: "auto", ease: "power3.out" });
-                            cmdInput.focus();
-                        }, 6000);
-
-                    } else {
-                        responseText = 'Usage: render <text>';
-                        respClass = 'error';
-                    }
-                }
-                else if (cmd === 'matrix') {
-                    isMatrixMode = !isMatrixMode;
-                    if(isMatrixMode) {
-                        document.body.classList.add('matrix-active');
-                        responseText = 'System overridden. Welcome to the Matrix.';
-                        respClass = 'matrix-text';
-                    } else {
-                        document.body.classList.remove('matrix-active');
-                        responseText = 'Matrix mode disabled. Returning to normal...';
-                        respClass = 'info';
-                    }
-                }
-                else if (availableCommands[cmd]) {
-                    responseText = availableCommands[cmd].response;
-                    respClass = availableCommands[cmd].type || 'info';
-                    action = availableCommands[cmd].action;
-                } 
-                else if (cmd !== '') {
-                    responseText = `bash: ${cmd}: command not found. Try "help".`;
-                    respClass = 'error';
-                }
-
-                if (responseText) {
-                    const respDiv = document.createElement('div');
-                    respDiv.className = 'cmd-line ' + respClass;
-                    respDiv.textContent = responseText;
-                    terminalBody.insertBefore(respDiv, inputLine);
-                }
-
-                if (action && action.startsWith('link:')) {
-                    setTimeout(() => window.open(action.split('link:')[1], '_blank'), 500);
-                }
-
-                this.value = '';
-                terminalBody.scrollTop = terminalBody.scrollHeight;
-            }
-        });
-
-        gsap.registerPlugin(TextPlugin);
-        gsap.to("#typewriter", { duration: 3, text: "Don't Just Write Code. Rewrite the Laws.", ease: "none", delay: 1 });
-
-        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-        gsap.to(camera.position, { z: -1500, ease: "none", scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }});
-        gsap.to(starSystem.rotation, { z: Math.PI / 2, ease: "none", scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 2 }});
-
-        gsap.from("#home h1", { opacity: 0, y: 50, duration: 2, delay: 0.5, ease: "power3.out" });
-        gsap.from(".hero-logo-img", { opacity: 0, scale: 0.8, duration: 1.5, delay: 0.2, ease: "back.out(1.7)" });
-        
-        gsap.to(termContainer, { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out", onComplete: fetchIPAndBoot });
-        
-        gsap.to(".card", { scrollTrigger: { trigger: "#skills", start: "top 70%" }, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" });
-        gsap.to(".contact-container", { scrollTrigger: { trigger: "#contact", start: "top 80%" }, opacity: 1, y: 0, duration: 1, ease: "back.out(1.7)" });
-
-        document.querySelectorAll('.nav-item').forEach(link => {
-            link.addEventListener('click', e => {
-                e.preventDefault();
-                gsap.to(window, {duration: 1.5, scrollTo: link.getAttribute('href'), ease: "power4.inOut"});
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                link.classList.add('active');
-            });
-        });
-
-        let isCameraRunning = false;
-        let isHandDetected = false;
-        let isFist = false;
-        let isModelLoaded = false;
-        
-        const toggleBtn = document.getElementById('cam-toggle');
-        const btnText = document.querySelector('.btn-text');
-        const spinner = document.getElementById('loading-spinner');
-        const camHint = document.getElementById('cam-hint');
-        const statusInd = document.getElementById('status-indicator');
-        const statusTxt = document.getElementById('status-text');
-        
-        let handTarget = new THREE.Vector3(0,0,0);
-        let smoothedTarget = new THREE.Vector3(0,0,0); 
-
-        const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-        
-        hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
-
-        hands.onResults(results => {
-            if(!isCameraRunning) return;
-
-            if(!isModelLoaded) {
-                isModelLoaded = true; spinner.style.display = 'none'; btnText.innerText = "CAM: ON"; toggleBtn.classList.add('active'); statusTxt.innerText = "Raise Hand";
-            }
-
-            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                isHandDetected = true;
-                const lm = results.multiHandLandmarks[0];
-                const palmCenter = lm[9];
-                
-                handTarget.x = (0.5 - palmCenter.x) * 1200;
-                handTarget.y = (0.5 - palmCenter.y) * 800;
-                handTarget.z = camera.position.z - 600; 
-
-                const wrist = lm[0]; const middleTip = lm[12];
-                const distance = Math.sqrt(Math.pow(wrist.x - middleTip.x, 2) + Math.pow(wrist.y - middleTip.y, 2));
-
-                if (distance < 0.25) { 
-                    isFist = true; statusInd.className = 'active-fist'; statusTxt.innerText = "APPLE ACTIVATED";
-                } else {
-                    isFist = false; statusInd.className = 'active-hand'; statusTxt.innerText = "Hand Tracked";
-                }
-
-            } else {
-                isHandDetected = false; statusInd.className = ''; statusTxt.innerText = "Scanning...";
-                handTarget.lerp(new THREE.Vector3(0,0,camera.position.z - 600), 0.05);
-            }
-        });
-
-        const videoElement = document.getElementById('input-video');
-        const cameraFeed = new Camera(videoElement, {
-            onFrame: async () => { if(isCameraRunning) await hands.send({image: videoElement}); },
-            width: 640, height: 480
-        });
-
-        toggleBtn.addEventListener('click', () => {
-            if(!isCameraRunning) {
-                isCameraRunning = true; btnText.innerText = "LOADING AI..."; spinner.style.display = 'block'; camHint.style.opacity = '0'; statusTxt.innerText = "Initializing..."; cameraFeed.start();
-            } else {
-                isCameraRunning = false; isHandDetected = false; isModelLoaded = false; btnText.innerText = "START CAMERA"; spinner.style.display = 'none'; toggleBtn.classList.remove('active'); statusInd.className = ''; statusTxt.innerText = "Camera Off";
-            }
-        });
-
-        const colBase = new THREE.Color(0x00C2FF); 
-        const colApple = new THREE.Color(0xE63946); 
-        const colText = new THREE.Color(0x44FF88); 
-        const colMatrix = new THREE.Color(0x00FF41);
-
-        function animate() {
-            requestAnimationFrame(animate);
-            const pos = geometry.attributes.position.array;
-
-            smoothedTarget.lerp(handTarget, 0.1); 
-
-            if (isTextMode) {
-                material.color.lerp(colText, 0.1);
-                material.size += (7.0 - material.size) * 0.1;
-                material.opacity += (1.0 - material.opacity) * 0.1;
-
-                starSystem.rotation.x += (0 - starSystem.rotation.x) * 0.1;
-                starSystem.rotation.y += (0 - starSystem.rotation.y) * 0.1;
-                starSystem.rotation.z += (0 - starSystem.rotation.z) * 0.1; 
-                
-                for(let i=0; i<particleCount; i++) {
-                    const i3 = i*3;
-                    pos[i3] += (textTargets[i3] - pos[i3]) * 0.08;
-                    pos[i3+1] += (textTargets[i3+1] - pos[i3+1]) * 0.08;
-                    pos[i3+2] += (textTargets[i3+2] - pos[i3+2]) * 0.08;
-                }
-            } 
-            else if (isMatrixMode) {
-                material.color.lerp(colMatrix, 0.1);
-                material.size += (4.0 - material.size) * 0.1;
-                material.opacity += (0.9 - material.opacity) * 0.1;
-
-                starSystem.rotation.y = 0; starSystem.rotation.x = 0; starSystem.rotation.z = 0;
-                
-                for(let i=0; i<particleCount; i++) {
-                    const i3 = i*3;
-                    pos[i3+1] -= (10 + Math.random() * 20);
-                    if (pos[i3+1] < -3000) {
-                        pos[i3+1] = 3000; pos[i3] = originalPos[i3]; pos[i3+2] = originalPos[i3+2];
-                    }
-                }
-            }
-            else if(isHandDetected && isCameraRunning) {
-                material.color.lerp(isFist ? colApple : colBase, 0.1);
-                material.size += (5.0 - material.size) * 0.1;
-                material.opacity += (0.9 - material.opacity) * 0.1;
-                
-                for(let i=0; i<particleCount; i++) {
-                    const i3 = i*3;
-                    let tx, ty, tz;
-
-                    if(isFist) {
-                        const time = Date.now() * 0.002;
-                        const cosT = Math.cos(time);
-                        const sinT = Math.sin(time);
-                        
-                        const sx = appleCoords[i3];
-                        const sy = appleCoords[i3+1];
-                        const sz = appleCoords[i3+2];
-                        
-                        const rx = sx * cosT - sz * sinT;
-                        const rz = sx * sinT + sz * cosT;
-                        
-                        tx = smoothedTarget.x + rx;
-                        ty = smoothedTarget.y + sy;
-                        tz = smoothedTarget.z + rz;
-
-                        pos[i3] += (tx - pos[i3]) * 0.1;
-                        pos[i3+1] += (ty - pos[i3+1]) * 0.1;
-                        pos[i3+2] += (tz - pos[i3+2]) * 0.1;
-
-                    } else {
-                        tx = smoothedTarget.x + randomOffsets[i3];
-                        ty = smoothedTarget.y + randomOffsets[i3+1];
-                        tz = smoothedTarget.z + randomOffsets[i3+2];
-                        
-                        pos[i3] += (tx - pos[i3]) * 0.05; 
-                        pos[i3+1] += (ty - pos[i3+1]) * 0.05; 
-                        pos[i3+2] += (tz - pos[i3+2]) * 0.05;
-                    }
-                }
-            } else {
-                material.color.lerp(colBase, 0.05);
-                material.size += (3.5 - material.size) * 0.1;
-                material.opacity += (0.8 - material.opacity) * 0.1;
-
-                for(let i=0; i<particleCount; i++) {
-                    const i3 = i*3;
-                    const ox = originalPos[i3]; const oy = originalPos[i3+1]; const oz = originalPos[i3+2];
-                    pos[i3] += (ox - pos[i3]) * 0.02; pos[i3+1] += (oy - pos[i3+1]) * 0.02; pos[i3+2] += (oz - pos[i3+2]) * 0.02;
-                }
-                starSystem.rotation.y += 0.0003;
-            }
-
-            geometry.attributes.position.needsUpdate = true;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth/window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        function toggleTooltip(event) {
-            event.stopPropagation();
-            document.getElementById('privacy-tooltip').classList.toggle('show');
-            document.querySelector('.info-btn').classList.toggle('active');
-        }
-
-        document.addEventListener('click', (e) => {
-            const tooltip = document.getElementById('privacy-tooltip');
-            if (tooltip.classList.contains('show') && !e.target.closest('.privacy-tooltip')) {
-                tooltip.classList.remove('show');
-                document.querySelector('.info-btn').classList.remove('active');
-            }
-        });
-    </script>
+  </div>
 </body>
 </html>

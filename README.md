@@ -1,51 +1,72 @@
-# 🌌 Gadi Rapaport | Interactive AI Portfolio 2.0
+# Gadi Rapaport — Interactive Portfolio 3.0
 
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
-![Version](https://img.shields.io/badge/Version-2.4.0-blue)
-![Role](https://img.shields.io/badge/Role-DevOps%20%26%20AI-red)
+A complete rebuild of the original interactive portfolio, focused on presenting real product-building capability rather than only DevOps-themed effects.
 
-ברוכים הבאים לפורטפוליו האינטראקטיבי שלי. זהו לא סתם אתר "כרטיס ביקור", אלא מערכת המשלבת גרפיקה תלת-ממדית (WebGL), בינה מלאכותית לזיהוי מחוות ידיים בזמן אמת, וטרמינל פקודות מלא המדמה סביבת עבודה של DevOps Engineer.
+## What changed
 
-## 🚀 תכונות מרכזיות (Key Features)
+- New positioning: Software Developer / Product Builder
+- Android, Python, automation, APIs, AI and DevOps are represented together
+- Project case studies instead of a flat project list
+- Live GitHub profile stats
+- Interactive developer terminal
+- Command palette (`Ctrl/Cmd + K`)
+- Three.js particle background
+- Responsive mobile-first layout
+- Reduced-motion accessibility support
+- Data-driven project and capability files
+- No build step required
 
-### 1. **Interactive Particle Galaxy**
-מערכת של מעל 14,000 חלקיקים המנוהלת באמצעות **Three.js**. הגלקסיה מגיבה לתנועת העכבר ולגלילה, ומשנה את צורתה וצבעה בהתאם לפעולות המשתמש.
+## Structure
 
-### 2. **AI Hand Tracking (MediaPipe)**
-באמצעות ספריית MediaPipe של Google, האתר מאפשר שליטה בחלקיקים ללא מגע:
-* **🖐️ יד פתוחה:** החלקיקים נמשכים אל כף היד ויוצרים "ענן" מרחף.
-* **✊ אגרוף קמוץ:** החלקיקים מתגבשים לכדור אנרגיה סגול ומרוכז (Cyber Sphere).
+```text
+.
+├── index.html
+├── css/
+│   └── main.css
+├── js/
+│   └── app.js
+├── data/
+│   ├── profile.json
+│   ├── capabilities.json
+│   └── projects.json
+└── README.md
+```
 
-### 3. **DevOps Style Terminal**
-טרמינל פקודות (Shell) מובנה המאפשר ניווט באתר, הורדת קורות חיים, ובדיקת סטטוסים של קונטיינרים דמיוניים (Docker/K8s). 
+## Run locally
 
-### 4. **Special Commands**
-* **`render <text>`**: הטרמינל נעלם, והחלקיקים מסתדרים במרחב התלת-ממדי כדי ליצור את המילה שכתבתם.
-* **`matrix`**: מצב האקרים שמשנה את כל האתר לצבעי ירוק-זוהר והופך את הגלקסיה ל"גשם קוד" נופל.
-* **`clear`**: ניקוי מסך הטרמינל.
+Because the site loads JSON using `fetch`, run it through a local web server rather than opening `index.html` directly.
 
-## 🛠 טכנולוגיות (Tech Stack)
+### Python
+```bash
+python -m http.server 8000
+```
+Then open `http://localhost:8000`.
 
-* **Frontend:** HTML5, CSS3 (Modern UI/UX).
-* **Animation:** [GSAP](https://greensock.com/gsap/) (ScrollTrigger, TextPlugin).
-* **3D Engine:** [Three.js](https://threejs.org/) (WebGL).
-* **AI/ML:** [MediaPipe Hands](https://google.github.io/mediapipe/solutions/hands.html).
-* **Data:** JSON based command system.
+### VS Code
+Use Live Server.
 
-## 📦 התקנה והרצה (Setup)
+## Deploy
 
-1.  שכפל את הרפוזיטורי:
-    ```bash
-    git clone [https://github.com/gad-rapaport/portfolio.git](https://github.com/gad-rapaport/portfolio.git)
-    ```
-2.  ודא שקובץ ה-`commands.json` נמצא באותה תיקייה עם ה-`index.html`.
-3.  הרץ את האתר באמצעות שרת מקומי (Live Server ב-VS Code או פקודת `python -m http.server`).
+Works directly on GitHub Pages, Netlify, Vercel static hosting, Cloudflare Pages or any regular static web server.
 
-> **הערה:** לשימוש ביכולות ה-AI, יש לאשר גישה למצלמה בדפדפן. כל עיבוד הוידאו מתבצע מקומית במכשיר שלך ואינו נשמר בשום מקום (Privacy First).
+## Customize
 
-## 👨‍💻 אודותיי
+- Projects: `data/projects.json`
+- Skills/capabilities: `data/capabilities.json`
+- Contact links: `index.html` and `data/profile.json`
+- Main styling: `css/main.css`
+- Terminal and interactions: `js/app.js`
 
-אני **גדי רפפורט**, סטודנט לדבאופס ומפתח אפליקציות המתמחה בשילוב של תשתיות ענן חזקות עם פתרונות AI מתקדמים. הפרויקט הזה מייצג את התשוקה שלי לחדשנות ולחוויית משתמש יוצאת דופן.
+## Suggested replacement workflow
 
----
-*Created with ❤️ by Gadi Rapaport - 2026*
+1. Back up the old repository.
+2. Remove old `index.html`, `commands.json` and obsolete assets.
+3. Copy this project into the repository root.
+4. Test locally.
+5. Commit and push.
+
+```bash
+git add .
+git commit -m "Rebuild portfolio as v3"
+git push
+```
