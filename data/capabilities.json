@@ -1,0 +1,38 @@
+[
+  {
+    "icon": "◫",
+    "title": "Android Product Development",
+    "description": "Native Android apps with product thinking, architecture, responsive UI and polished user flows.",
+    "tags": ["Kotlin", "Jetpack Compose", "Android Studio", "UI/UX"]
+  },
+  {
+    "icon": "⌁",
+    "title": "Python & Automation",
+    "description": "Automation systems, data workflows, integrations and backend utilities designed to save time and remove repetitive work.",
+    "tags": ["Python", "Automation", "REST", "Scripting"]
+  },
+  {
+    "icon": "↗",
+    "title": "APIs & Telegram Systems",
+    "description": "Bots, API integrations, messaging workflows and systems that connect users, services and data.",
+    "tags": ["Telegram Bot API", "Webhooks", "REST APIs", "JSON"]
+  },
+  {
+    "icon": "✦",
+    "title": "AI Product Integration",
+    "description": "Practical AI features embedded into real products: assistants, content flows, intelligent automation and AI-powered UX.",
+    "tags": ["LLMs", "Prompting", "AI Workflows", "Media AI"]
+  },
+  {
+    "icon": "⬡",
+    "title": "DevOps & Delivery",
+    "description": "CI/CD, Linux, containers, deployment workflows and infrastructure thinking that help products move from code to production.",
+    "tags": ["Docker", "GitHub Actions", "Linux", "CI/CD"]
+  },
+  {
+    "icon": "◇",
+    "title": "Product & Interface Design",
+    "description": "Turning unclear ideas into structured product experiences, visual systems, interaction flows and implementation-ready plans.",
+    "tags": ["UI/UX", "Product Thinking", "Photoshop", "Motion"]
+  }
+]

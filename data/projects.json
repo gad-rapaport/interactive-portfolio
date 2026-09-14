@@ -1,0 +1,93 @@
+[
+  {
+    "slug": "tiptrip",
+    "title": "TipTrip",
+    "category": "Android",
+    "featured": true,
+    "accent": "cyan",
+    "summary": "An AI-assisted travel companion designed to organize trips with less friction, including planning, local guidance, kosher needs and Shabbat-aware experiences.",
+    "stack": ["Android", "Kotlin", "Jetpack Compose", "AI", "Product UX"],
+    "problem": "Travel planning is fragmented across maps, notes, search, messaging and generic travel tools. The product goal is to bring planning and trip context into one focused mobile experience.",
+    "build": "Product concept, mobile architecture, interaction design, AI-assisted travel flows, destination guidance and a design system tailored for a premium mobile experience.",
+    "highlights": ["AI-assisted planning", "Kosher & Shabbat context", "Premium Android UX", "Product-first architecture"],
+    "link": "https://github.com/gad-rapaport/GRavel"
+  },
+  {
+    "slug": "devops-final",
+    "title": "DevOps Final Project",
+    "category": "DevOps",
+    "featured": false,
+    "accent": "violet",
+    "summary": "A practical infrastructure project focused on delivery workflows, environments and modern DevOps practices.",
+    "stack": ["DevOps", "Docker", "CI/CD", "Linux"],
+    "problem": "Demonstrate a complete delivery mindset rather than isolated tools.",
+    "build": "A hands-on project around infrastructure, automation and deployment practices.",
+    "highlights": ["CI/CD thinking", "Container workflows", "Linux operations", "Delivery automation"],
+    "link": "https://github.com/gad-rapaport/devops-final-project"
+  },
+  {
+    "slug": "networking",
+    "title": "Reliable Networking Project",
+    "category": "Systems",
+    "featured": false,
+    "accent": "green",
+    "summary": "A networking-focused implementation exploring reliable transport behavior, congestion concepts and protocol logic.",
+    "stack": ["Networking", "Python", "RUDP", "Protocol Design"],
+    "problem": "Understand reliability and congestion through implementation rather than theory alone.",
+    "build": "A practical networking project with transport logic and protocol behavior.",
+    "highlights": ["Reliable transport", "Protocol logic", "Congestion concepts", "Python implementation"],
+    "link": "https://github.com/gad-rapaport/project-networks-almog"
+  },
+  {
+    "slug": "wedding-manager",
+    "title": "Wedding Invite Manager",
+    "category": "Product",
+    "featured": false,
+    "accent": "pink",
+    "summary": "A lightweight product for organizing and managing wedding invitations and event-related workflow.",
+    "stack": ["Web", "Product", "Workflow", "Automation"],
+    "problem": "Event invite management quickly becomes scattered across lists and conversations.",
+    "build": "A focused management tool built around real operational needs.",
+    "highlights": ["Operational workflow", "Simple product logic", "Focused UX", "Real-world use case"],
+    "link": "https://github.com/gad-rapaport/wedding-invite-manager"
+  },
+  {
+    "slug": "task-manager",
+    "title": "Haara Task Manager",
+    "category": "Product",
+    "featured": false,
+    "accent": "cyan",
+    "summary": "A task-management system built around practical workflow and day-to-day operational clarity.",
+    "stack": ["Product", "Tasks", "Web", "UX"],
+    "problem": "Teams need simple operational visibility without heavy process overhead.",
+    "build": "A task-centered product with a focus on clarity and usable workflow.",
+    "highlights": ["Task visibility", "Practical workflow", "Simple UX", "Operational clarity"],
+    "link": "https://github.com/gad-rapaport/haara-task-manager"
+  },
+  {
+    "slug": "postflow",
+    "title": "PostFlow Elite",
+    "category": "Automation",
+    "featured": false,
+    "accent": "violet",
+    "summary": "A content and workflow automation project centered on publishing flow and operational efficiency.",
+    "stack": ["Automation", "Workflow", "Content", "Python"],
+    "problem": "Repeated content operations waste time and create inconsistency.",
+    "build": "A workflow-oriented tool aimed at making publishing operations faster and more structured.",
+    "highlights": ["Workflow automation", "Reduced repetitive work", "Content operations", "Python logic"],
+    "link": "https://github.com/gad-rapaport/postflow-elite"
+  },
+  {
+    "slug": "portfolio",
+    "title": "Interactive Portfolio 3.1",
+    "category": "Creative Tech",
+    "featured": false,
+    "accent": "green",
+    "summary": "This portfolio itself: a dynamic developer experience with a live project system, local portfolio assistant, command palette, terminal and realtime visual layer.",
+    "stack": ["Three.js", "JavaScript", "GSAP", "GitHub API", "UX"],
+    "problem": "Traditional portfolios list skills but rarely demonstrate personality, interaction design or technical range.",
+    "build": "A portfolio treated as a product: fast, interactive, structured and intentionally memorable.",
+    "highlights": ["Three.js visual layer", "Local portfolio AI", "Live GitHub data", "Command palette"],
+    "link": "https://github.com/gad-rapaport/interactive-portfolio"
+  }
+]
